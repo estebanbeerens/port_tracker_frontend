@@ -68,6 +68,7 @@ class MainDrawerState extends State<MainDrawer> {
     return new Scaffold(
       appBar: new AppBar(
         // We will dynamically display title of selected page
+        centerTitle: true,
         title: new Text(widget.drawerItems[_selectedDrawerIndex].title, style: TextStyle(color: Colors.black)),
         iconTheme: new IconThemeData(color: Colors.black),
         backgroundColor: Colors.white10,
