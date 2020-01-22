@@ -3,6 +3,7 @@ package io.flutter.plugins;
 import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 import io.flutter.embedding.engine.FlutterEngine;
+import io.flutter.embedding.engine.plugins.shim.ShimPluginRegistry;
 
 /**
  * Generated file. Do not edit.
@@ -12,5 +13,10 @@ import io.flutter.embedding.engine.FlutterEngine;
 @Keep
 public final class GeneratedPluginRegistrant {
   public static void registerWith(@NonNull FlutterEngine flutterEngine) {
+    ShimPluginRegistry shimPluginRegistry = new ShimPluginRegistry(flutterEngine);
+      com.apptreesoftware.barcodescan.BarcodeScanPlugin.registerWith(shimPluginRegistry.registrarFor("com.apptreesoftware.barcodescan.BarcodeScanPlugin"));
+      com.baseflow.geolocator.GeolocatorPlugin.registerWith(shimPluginRegistry.registrarFor("com.baseflow.geolocator.GeolocatorPlugin"));
+      com.baseflow.googleapiavailability.GoogleApiAvailabilityPlugin.registerWith(shimPluginRegistry.registrarFor("com.baseflow.googleapiavailability.GoogleApiAvailabilityPlugin"));
+      com.baseflow.location_permissions.LocationPermissionsPlugin.registerWith(shimPluginRegistry.registrarFor("com.baseflow.location_permissions.LocationPermissionsPlugin"));
   }
 }
