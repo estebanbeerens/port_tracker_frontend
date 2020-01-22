@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:port_tracker/login.dart';
+import 'package:port_tracker/components/main_drawer.dart';
 
 class MyApp extends StatelessWidget {
   @override
@@ -9,7 +9,7 @@ class MyApp extends StatelessWidget {
       theme: new ThemeData(
         primarySwatch: Colors.cyan,
       ),
-      home: new Login(),
+      home: new MainDrawer(),
     );
   }
 }

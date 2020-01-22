@@ -47,7 +47,7 @@ class _HomePageState extends State<HomePage> {
         ),
         child: InkWell(
           child: Material(
-            color: Color(0x39B1C3).withOpacity(0.8),
+            color: Color(0x39B1C3).withOpacity(0.6),
             elevation: 10.0,
             borderRadius: BorderRadius.circular(15.0),
             child: Container(
@@ -94,7 +94,7 @@ class _HomePageState extends State<HomePage> {
                                     iconIm,
                                     color: Colors.black,
                                     size: 65.0,
-                                    semanticLabel: 'Logo fo shipping',
+                                    semanticLabel: 'Logo of shipping',
                                   ),
                                 ),
                             ),
@@ -151,11 +151,23 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView(
+      body: Stack(
         children: <Widget>[
-          customcard(tilenames[0], info[0], icons[0], infoBoxes[0], infoBoxesExtra[0]),
-          customcard(tilenames[1], info[1], icons[1], infoBoxes[1], infoBoxesExtra[1]),
-          customcard(tilenames[2], info[2], icons[2], infoBoxes[2], infoBoxesExtra[2]),
+          new Container(
+            decoration: new BoxDecoration(
+              image: new DecorationImage(
+                image: new AssetImage('assets/images/background.png'),
+                fit: BoxFit.cover
+              ),
+            ),
+          ),
+          new ListView(
+            children: <Widget>[
+              customcard(tilenames[0], info[0], icons[0], infoBoxes[0], infoBoxesExtra[0]),
+              customcard(tilenames[1], info[1], icons[1], infoBoxes[1], infoBoxesExtra[1]),
+              customcard(tilenames[2], info[2], icons[2], infoBoxes[2], infoBoxesExtra[2]),
+            ],
+          )
         ],
       )
     );
