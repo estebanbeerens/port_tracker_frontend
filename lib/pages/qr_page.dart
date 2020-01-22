@@ -4,10 +4,10 @@ import 'package:flutter/services.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 
 class QrPage extends StatefulWidget{
-  _QrPageSate createState()=> _QrPageSate();
+  _QrPageState createState()=> _QrPageState();
 }
 
-class _QrPageSate extends State<QrPage> {
+class _QrPageState extends State<QrPage> {
   String result = "Scan your code here!";
 
   Future _scanQR() async {
