@@ -71,8 +71,8 @@ class MainDrawerState extends State<MainDrawer> {
         centerTitle: true,
         title: new Text(widget.drawerItems[_selectedDrawerIndex].title, style: TextStyle(color: Colors.black)),
         iconTheme: new IconThemeData(color: Colors.black),
-        backgroundColor: Colors.white10,
-        elevation: 0.0 
+        backgroundColor: Colors.white70,
+        // elevation: 0.0 
       ),
       // Let's register our Drawer to the Scaffold
       drawer: new Drawer(
@@ -80,10 +80,10 @@ class MainDrawerState extends State<MainDrawer> {
           children: <Widget>[
             //Lets Create a material design drawer header with account name, email,avatar
             new UserAccountsDrawerHeader(
-              accountName: new Text("Kim Jon-Un"),
-              accountEmail: new Text("Truck driver"),
+              accountName: new Text("Meow the Cat"),
+              accountEmail: new Text("Annoying pet"),
               currentAccountPicture: new CircleAvatar(backgroundImage:
-                new NetworkImage("https://thenypost.files.wordpress.com/2016/05/north_korea_the_real_kim.jpg?quality=80&strip=all&strip=all"),),
+                new NetworkImage("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrqn1Z7CMilGelnzPiKoJ8FoKI0dM9suRRv5YoVrIABPXjRdKOtQ&s"),),
               decoration: new BoxDecoration(
                 gradient: LinearGradient(
                   begin: FractionalOffset.bottomLeft,
