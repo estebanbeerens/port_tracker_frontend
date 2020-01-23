@@ -9,6 +9,12 @@
         android:name="io.flutter.app.FlutterApplication"
         android:label="Port Tracker"
         android:icon="@mipmap/ic_launcher">
+
+        <!-- API KEY FOR GOOGLE MAPS -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBpMtIJuV1XFQbXlOqk-aPTvG7qE8KPuRw" />
+
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
@@ -25,6 +31,7 @@
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
         <meta-data
             android:name="flutterEmbedding"
-            android:value="2" />
+            android:value="2" />    
+    
     </application>
 </manifest>
