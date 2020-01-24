@@ -96,21 +96,15 @@ class MainDrawerState extends State<MainDrawer> {
                     Color(0x39B1C3).withOpacity(1.0),
                   ]
                 ),
-                decoration: new BoxDecoration(
-                  gradient: LinearGradient(
-                      begin: FractionalOffset.bottomLeft,
-                      end: FractionalOffset.topCenter,
-                      colors: [
-                        Color(0x39B1C3).withOpacity(0.0),
-                        Color(0x39B1C3).withOpacity(1.0),
-                      ]),
-                )),
+              ),
+            ),
             new Column(children: drawerOptions),
             new Divider(),
             new ListTile(
                 leading: new Icon(Icons.grid_off),
                 title: new Text("Log out of device"),
-                enabled: false),
+                enabled: false
+            ),
             new ListTile(
               leading: new Icon(Icons.exit_to_app),
               title: new Text("Log Out"),
@@ -123,7 +117,7 @@ class MainDrawerState extends State<MainDrawer> {
                 );
               },
             ),
-          ],
+          ],   
         ),
       ),
       body: _getDrawerFragment(_selectedDrawerIndex),
