@@ -66,7 +66,7 @@ class MainDrawerState extends State<MainDrawer> {
       var d = widget.drawerItems[i];
       drawerOptions.add(new ListTile(
         leading: new Icon(d.icon),
-        title: new Text(d.title),
+        title: new Text(d.title, style: TextStyle(fontFamily: 'Monsterrat')),
         enabled: d.enabled,
         selected: i == _selectedDrawerIndex,
         onTap: () => _onSelectItem(i),
@@ -75,9 +75,23 @@ class MainDrawerState extends State<MainDrawer> {
     //Let's scaffold our homepage
     return new Scaffold(
       appBar: new AppBar(
-        // We will dynamically display title of selected page
         centerTitle: true,
-        title: new Text(widget.drawerItems[_selectedDrawerIndex].title, style: TextStyle(color: Colors.black)),
+        // We will dynamically display title of selected page
+        title: new Row(
+          children: <Widget>[
+              Container(
+                width: 50,
+                height: 50,
+                decoration: BoxDecoration(
+                  image: new DecorationImage(
+                      image: new AssetImage("assets/images/logo.png"),
+                      fit: BoxFit.fill,
+                  )
+                )
+              ),
+            Text(widget.drawerItems[_selectedDrawerIndex].title, style: TextStyle(color: Colors.black, fontFamily: 'Roboto'))
+          ],
+        ),
         iconTheme: new IconThemeData(color: Colors.black),
         backgroundColor: Colors.white,
         // elevation: 0.0 
@@ -88,7 +102,7 @@ class MainDrawerState extends State<MainDrawer> {
           children: <Widget>[
             //Lets Create a material design drawer header with account name, email,avatar
             new UserAccountsDrawerHeader(
-              accountName: new Text("Tyrone Jackson"),
+              accountName: new Text("Tyrone Jackson", style: TextStyle(fontFamily: 'Monsterrat')),
               accountEmail: new Text("Truck driver"),
               currentAccountPicture: new CircleAvatar(backgroundImage:
                 new NetworkImage("https://c.pxhere.com/images/0f/3f/4dbc54d34a6b984a6c5f283be804-1447673.jpg!d"),),
@@ -108,12 +122,12 @@ class MainDrawerState extends State<MainDrawer> {
             new Expanded(child: new Align()),
             new ListTile(
               leading: new Icon(Icons.grid_off),
-              title: new Text("Log out of device"),
+              title: new Text("Log out of device", style: TextStyle(fontFamily: 'Monsterrat')),
               enabled: false
             ),
             new ListTile(
               leading: new Icon(Icons.exit_to_app),
-              title: new Text("Log Out"),
+              title: new Text("Log Out", style: TextStyle(fontFamily: 'Monsterrat')),
               onTap: () {
                 Navigator.pushReplacement(
                   context,

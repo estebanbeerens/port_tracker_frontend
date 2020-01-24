@@ -104,7 +104,6 @@ class MapPageState extends State<MapPage> {
               myLocationButtonEnabled: true,
               myLocationEnabled: true,
               buildingsEnabled: true,
-              
               onMapCreated: _onMapCreated,
               initialCameraPosition: CameraPosition(
                 target: LatLng(_currentPosition.latitude, _currentPosition.longitude),
@@ -115,7 +114,7 @@ class MapPageState extends State<MapPage> {
           ),
           backdropEnabled: true,
           backdropOpacity: 0.2,
-          minHeight: 70,
+          minHeight: 90,
           borderRadius: radius,
           ),
       );
