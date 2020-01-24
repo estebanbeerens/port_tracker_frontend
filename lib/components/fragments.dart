@@ -3,6 +3,7 @@ import 'package:port_tracker/pages/home_page.dart';
 import 'package:port_tracker/pages/map_page.dart';
 import 'package:port_tracker/pages/qr_page.dart';
 import 'package:port_tracker/pages/settings_page.dart';
+import 'package:port_tracker/pages/loads_page.dart';
   
 class Home extends StatelessWidget {
   @override
@@ -29,5 +30,12 @@ class Settings extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SettingsPage();
+  }
+}
+
+class Loads extends StatelessWidget {
+  @override 
+  Widget build(BuildContext context) {
+    return LoadsPage();
   }
 }

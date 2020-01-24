@@ -18,7 +18,7 @@ class MainDrawer extends StatefulWidget {
     new DrawerItem("Home", Icons.home, true),
     new DrawerItem("Map", Icons.map, true),
     new DrawerItem("QR Scanner", Icons.grid_on, true),
-    new DrawerItem("Nieuwe ladingen", Icons.settings_input_component, false),
+    new DrawerItem("Nieuwe ladingen", Icons.settings_input_component, true),
     new DrawerItem("Settings", Icons.settings, true)
   ];
   //Let's Create and Return state for this 'StatefulWidget'
@@ -42,7 +42,7 @@ class MainDrawerState extends State<MainDrawer> {
       case 2:
         return new Fragments.Qr();
       case 3:
-        return new Fragments.Settings();
+        return new Fragments.Loads();
       case 4:
         return new Fragments.Settings();
 
