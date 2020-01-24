@@ -24,6 +24,7 @@ dependencies:
   google_maps_flutter: ^0.5.21+15     # For map page
   loading: ^1.0.2                     # For loading spinner
   sliding_up_panel: ^0.3.6            # For sliding up panel
+  provider: ^4.0.2
 
 
   # The following adds the Cupertino Icons font to your application.
