@@ -1,5 +1,7 @@
 import 'package:port_tracker/components/fragments.dart' as Fragments;
 import 'package:flutter/material.dart';
+import 'package:port_tracker/pages/login_page.dart';
+import 'package:port_tracker/services/auth_service.dart';
 
 //Let's define a DrawerItem data object
 class DrawerItem {
@@ -7,6 +9,7 @@ class DrawerItem {
   IconData icon;
   DrawerItem(this.title, this.icon);
 }
+
 // Our Homepage
 class MainDrawer extends StatefulWidget {
   //Let's define our drawer items, strings and images
@@ -22,6 +25,7 @@ class MainDrawer extends StatefulWidget {
     return new MainDrawerState();
   }
 }
+
 // Let's define state for our homepage. A state is just information for a widget.
 class MainDrawerState extends State<MainDrawer> {
   int _selectedDrawerIndex = 0;
@@ -32,7 +36,7 @@ class MainDrawerState extends State<MainDrawer> {
       case 0:
         return new Fragments.Home();
       case 1:
-        return new Fragments.Map();  
+        return new Fragments.Map();
       case 2:
         return new Fragments.Qr();
       case 3:
@@ -42,6 +46,7 @@ class MainDrawerState extends State<MainDrawer> {
         return new Text("Error");
     }
   }
+
   //Let's update the selectedDrawerItemIndex the close the drawer
   _onSelectItem(int index) {
     setState(() => _selectedDrawerIndex = index);
@@ -55,57 +60,62 @@ class MainDrawerState extends State<MainDrawer> {
     //Let's create drawer list items. Each will have an icon and text
     for (var i = 0; i < widget.drawerItems.length; i++) {
       var d = widget.drawerItems[i];
-      drawerOptions.add(
-        new ListTile(
-          leading: new Icon(d.icon),
-          title: new Text(d.title),
-          selected: i == _selectedDrawerIndex,
-          onTap: () => _onSelectItem(i),
-        )
-      );
+      drawerOptions.add(new ListTile(
+        leading: new Icon(d.icon),
+        title: new Text(d.title),
+        selected: i == _selectedDrawerIndex,
+        onTap: () => _onSelectItem(i),
+      ));
     }
     //Let's scaffold our homepage
     return new Scaffold(
       appBar: new AppBar(
-        // We will dynamically display title of selected page
-        centerTitle: true,
-        title: new Text(widget.drawerItems[_selectedDrawerIndex].title, style: TextStyle(color: Colors.black)),
-        iconTheme: new IconThemeData(color: Colors.black),
-        backgroundColor: Colors.white10,
-        elevation: 0.0 
-      ),
+          // We will dynamically display title of selected page
+          centerTitle: true,
+          title: new Text(widget.drawerItems[_selectedDrawerIndex].title,
+              style: TextStyle(color: Colors.black)),
+          iconTheme: new IconThemeData(color: Colors.black),
+          backgroundColor: Colors.white10,
+          elevation: 0.0),
       // Let's register our Drawer to the Scaffold
       drawer: new Drawer(
         child: new Column(
           children: <Widget>[
             //Lets Create a material design drawer header with account name, email,avatar
             new UserAccountsDrawerHeader(
-              accountName: new Text("Kim Jon-Un"),
-              accountEmail: new Text("Truck driver"),
-              currentAccountPicture: new CircleAvatar(backgroundImage:
-                new NetworkImage("https://thenypost.files.wordpress.com/2016/05/north_korea_the_real_kim.jpg?quality=80&strip=all&strip=all"),),
-              decoration: new BoxDecoration(
-                gradient: LinearGradient(
-                  begin: FractionalOffset.bottomLeft,
-                  end: FractionalOffset.topCenter,
-                  colors: [
-                    Color(0x39B1C3).withOpacity(0.0),
-                    Color(0x39B1C3).withOpacity(1.0),
-                  ]
+                accountName: new Text("Kim Jon-Un"),
+                accountEmail: new Text("Truck driver"),
+                currentAccountPicture: new CircleAvatar(
+                  backgroundImage: new NetworkImage(
+                      "https://thenypost.files.wordpress.com/2016/05/north_korea_the_real_kim.jpg?quality=80&strip=all&strip=all"),
                 ),
-              )
-            ),
+                decoration: new BoxDecoration(
+                  gradient: LinearGradient(
+                      begin: FractionalOffset.bottomLeft,
+                      end: FractionalOffset.topCenter,
+                      colors: [
+                        Color(0x39B1C3).withOpacity(0.0),
+                        Color(0x39B1C3).withOpacity(1.0),
+                      ]),
+                )),
             new Column(children: drawerOptions),
             new Divider(),
             new ListTile(
-              leading: new Icon(Icons.grid_off),
-              title: new Text("Log out of device"),
-              enabled: false
-            ),
+                leading: new Icon(Icons.grid_off),
+                title: new Text("Log out of device"),
+                enabled: false),
             new ListTile(
               leading: new Icon(Icons.exit_to_app),
-              title: new Text("Log Out")
-              )
+              title: new Text("Log Out"),
+              onTap: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      settings: RouteSettings(name: "LoginPage"),
+                      builder: (BuildContext context) => LoginPage()),
+                );
+              },
+            ),
           ],
         ),
       ),

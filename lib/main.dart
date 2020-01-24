@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:port_tracker/login.dart';
+import 'package:port_tracker/pages/login_page.dart';
+import 'package:port_tracker/pages/home_page.dart';
+import 'package:port_tracker/services/auth_service.dart';
+import 'package:provider/provider.dart';
 
 class MyApp extends StatelessWidget {
   @override
@@ -9,10 +12,27 @@ class MyApp extends StatelessWidget {
       theme: new ThemeData(
         primarySwatch: Colors.cyan,
       ),
-      home: new Login(),
+      home: FutureBuilder(
+        future: Provider.of<AuthService>(context).getUser(),
+
+        builder: (context, AsyncSnapshot snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            return snapshot.hasData ? HomePage() : LoginPage();
+          } else {
+            return Container(color: Colors.white);
+          }
+        }
+      ),
     );
   }
 }
 
 //Then we run our app
-void main() => runApp(new MyApp());
+void main() => runApp(
+  ChangeNotifierProvider<AuthService>(
+    child: MyApp(),
+    create: (BuildContext context) {
+      return AuthService();
+    },
+  ),
+);
