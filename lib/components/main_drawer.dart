@@ -17,7 +17,8 @@ class MainDrawer extends StatefulWidget {
   final drawerItems = [
     new DrawerItem("Home", Icons.home, true),
     new DrawerItem("Map", Icons.map, true),
-    new DrawerItem("QR Scanner", Icons.grid_on, false),
+    new DrawerItem("QR Scanner", Icons.grid_on, true),
+    new DrawerItem("Nieuwe ladingen", Icons.settings_input_component, false),
     new DrawerItem("Settings", Icons.settings, true)
   ];
   //Let's Create and Return state for this 'StatefulWidget'
@@ -41,6 +42,8 @@ class MainDrawerState extends State<MainDrawer> {
       case 2:
         return new Fragments.Qr();
       case 3:
+        return new Fragments.Settings();
+      case 4:
         return new Fragments.Settings();
 
       default:
@@ -85,10 +88,10 @@ class MainDrawerState extends State<MainDrawer> {
           children: <Widget>[
             //Lets Create a material design drawer header with account name, email,avatar
             new UserAccountsDrawerHeader(
-              accountName: new Text("Dries Bierens"),
-              accountEmail: new Text("Worthless back-end developer"),
+              accountName: new Text("Tyrone Jackson"),
+              accountEmail: new Text("Truck driver"),
               currentAccountPicture: new CircleAvatar(backgroundImage:
-                new NetworkImage("https://scontent-bru2-1.xx.fbcdn.net/v/t1.15752-9/83885531_202781944228102_8149592996963155968_n.jpg?_nc_cat=109&_nc_ohc=e2IDL9GbNWEAX9LhbfD&_nc_ht=scontent-bru2-1.xx&oh=14b7390dc601f596b71beeabefdbe7bc&oe=5ED14861"),),
+                new NetworkImage("https://c.pxhere.com/images/0f/3f/4dbc54d34a6b984a6c5f283be804-1447673.jpg!d"),),
               decoration: new BoxDecoration(
                 gradient: LinearGradient(
                   begin: FractionalOffset.bottomLeft,
@@ -101,11 +104,12 @@ class MainDrawerState extends State<MainDrawer> {
               ),
             ),
             new Column(children: drawerOptions),
-            new Divider(),
+            // new Divider(),
+            new Expanded(child: new Align()),
             new ListTile(
-                leading: new Icon(Icons.grid_off),
-                title: new Text("Log out of device"),
-                enabled: false
+              leading: new Icon(Icons.grid_off),
+              title: new Text("Log out of device"),
+              enabled: false
             ),
             new ListTile(
               leading: new Icon(Icons.exit_to_app),
@@ -119,6 +123,11 @@ class MainDrawerState extends State<MainDrawer> {
                 );
               },
             ),
+            new Padding(
+              padding: EdgeInsets.symmetric(
+                vertical: 10.0
+              )
+            )
           ],   
         ),
       ),
