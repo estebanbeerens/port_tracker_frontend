@@ -43,8 +43,20 @@ class _QrPageState extends State<QrPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: new Center(
-        child: new Text(result, style: new TextStyle(fontSize: 30.0),),
+      body: new Stack(
+        children: <Widget>[
+          new Container(
+            decoration: new BoxDecoration(
+              image: new DecorationImage(
+                image: new AssetImage('assets/images/background.png'),
+                fit: BoxFit.cover
+              ),
+            ),
+          ),
+          new Center(
+           child: new Text(result, style: new TextStyle(fontSize: 35.0),),
+          )
+        ],
       ),
       floatingActionButton: FloatingActionButton.extended(
         icon: Icon(Icons.camera_alt),

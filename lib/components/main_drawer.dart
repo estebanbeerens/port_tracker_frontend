@@ -70,24 +70,31 @@ class MainDrawerState extends State<MainDrawer> {
     //Let's scaffold our homepage
     return new Scaffold(
       appBar: new AppBar(
-          // We will dynamically display title of selected page
-          centerTitle: true,
-          title: new Text(widget.drawerItems[_selectedDrawerIndex].title,
-              style: TextStyle(color: Colors.black)),
-          iconTheme: new IconThemeData(color: Colors.black),
-          backgroundColor: Colors.white10,
-          elevation: 0.0),
+        // We will dynamically display title of selected page
+        centerTitle: true,
+        title: new Text(widget.drawerItems[_selectedDrawerIndex].title, style: TextStyle(color: Colors.black)),
+        iconTheme: new IconThemeData(color: Colors.black),
+        backgroundColor: Colors.white,
+        // elevation: 0.0 
+      ),
       // Let's register our Drawer to the Scaffold
       drawer: new Drawer(
         child: new Column(
           children: <Widget>[
             //Lets Create a material design drawer header with account name, email,avatar
             new UserAccountsDrawerHeader(
-                accountName: new Text("Kim Jon-Un"),
-                accountEmail: new Text("Truck driver"),
-                currentAccountPicture: new CircleAvatar(
-                  backgroundImage: new NetworkImage(
-                      "https://thenypost.files.wordpress.com/2016/05/north_korea_the_real_kim.jpg?quality=80&strip=all&strip=all"),
+              accountName: new Text("Dries Bierens"),
+              accountEmail: new Text("Worthless back-end developer"),
+              currentAccountPicture: new CircleAvatar(backgroundImage:
+                new NetworkImage("https://scontent-bru2-1.xx.fbcdn.net/v/t1.15752-9/83885531_202781944228102_8149592996963155968_n.jpg?_nc_cat=109&_nc_ohc=e2IDL9GbNWEAX9LhbfD&_nc_ht=scontent-bru2-1.xx&oh=14b7390dc601f596b71beeabefdbe7bc&oe=5ED14861"),),
+              decoration: new BoxDecoration(
+                gradient: LinearGradient(
+                  begin: FractionalOffset.bottomLeft,
+                  end: FractionalOffset.topCenter,
+                  colors: [
+                    Color(0x39B1C3).withOpacity(0.0),
+                    Color(0x39B1C3).withOpacity(1.0),
+                  ]
                 ),
                 decoration: new BoxDecoration(
                   gradient: LinearGradient(
