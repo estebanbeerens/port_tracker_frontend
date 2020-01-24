@@ -11,6 +11,7 @@ class MyApp extends StatelessWidget {
       title: 'Port Tracker',
       theme: new ThemeData(
         primarySwatch: Colors.cyan,
+        fontFamily: 'Roboto'
       ),
       home: FutureBuilder(
         future: Provider.of<AuthService>(context).getUser(),
