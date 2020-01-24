@@ -7,17 +7,18 @@ import 'package:port_tracker/services/auth_service.dart';
 class DrawerItem {
   String title;
   IconData icon;
-  DrawerItem(this.title, this.icon);
+  bool enabled;
+  DrawerItem(this.title, this.icon, this.enabled);
 }
 
 // Our Homepage
 class MainDrawer extends StatefulWidget {
   //Let's define our drawer items, strings and images
   final drawerItems = [
-    new DrawerItem("Home", Icons.home),
-    new DrawerItem("Map", Icons.map),
-    new DrawerItem("QR Scanner", Icons.grid_on),
-    new DrawerItem("Settings", Icons.settings)
+    new DrawerItem("Home", Icons.home, true),
+    new DrawerItem("Map", Icons.map, true),
+    new DrawerItem("QR Scanner", Icons.grid_on, false),
+    new DrawerItem("Settings", Icons.settings, true)
   ];
   //Let's Create and Return state for this 'StatefulWidget'
   @override
@@ -63,6 +64,7 @@ class MainDrawerState extends State<MainDrawer> {
       drawerOptions.add(new ListTile(
         leading: new Icon(d.icon),
         title: new Text(d.title),
+        enabled: d.enabled,
         selected: i == _selectedDrawerIndex,
         onTap: () => _onSelectItem(i),
       ));
