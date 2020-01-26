@@ -7,37 +7,53 @@ class LoadsPage extends StatefulWidget {
 }
 
 class _LoadsPageState extends State<LoadsPage> {
-  Position _currentPosition;
-  List<String> names = ["Lading 1", "Lading 2", "Lading 3", "Lading 4"];
+  @override
+  void initState() {
+    super.initState();
+    _initializeLoads();
+  }
 
-  List<Position> positions = [
-    new Position(longitude: 51.157771, latitude: 4.968508),
-    new Position(longitude: 51.5376, latitude: 5.3547),
-    new Position(longitude: 52.245, latitude: 4.757),
-    new Position(longitude: 52.954, latitude: 6.489)
-  ];
+  Map<String, double> _namesDistances = Map();
+  Map<String, Position> _loads = {
+    "Lading 1": new Position(longitude: 4.968508, latitude: 51.157771),
+    "Lading 2": new Position(longitude: 5.3547, latitude: 51.5376),
+    "Lading 3": new Position(longitude: 4.757, latitude: 52.245),
+    "Lading 4": new Position(longitude: 6.489, latitude: 52.954)
+  };
 
-  Future<void> _getLocation() async {
+  Future<void> _initializeLoads() async {
+    Position current = await _getLocation();
+    await _getDistances(current);
+  }
+
+  Future<Position> _getLocation() async {
+    final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
+    return await geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.best);
+  }
+
+
+  Future<void> _getDistance(
+      String name, Position position, Position currentPos) async {
     final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
     geolocator
-        .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
-        .then((Position position) {
+        .distanceBetween(currentPos.latitude, currentPos.longitude,
+            position.latitude, position.longitude)
+        .then((double hoeweid) {
       setState(() {
-        _currentPosition = position;
+        print(hoeweid);
+        _namesDistances.putIfAbsent(name, () => hoeweid);
       });
     }).catchError((e) {
       print(e);
     });
   }
 
-  Future<double> _getDistance(Position position) async {
-    double distance = await Geolocator().distanceBetween(_currentPosition.latitude,
-        _currentPosition.longitude, position.latitude, position.longitude);
-    print(distance);
-    return distance;
+  Future<void> _getDistances(Position currentPos) async {
+    for (var load in _loads.keys) {
+      await _getDistance(load, _loads[load], currentPos);
+    }
   }
-
-  
 
   Widget customcard(String name, Position pos) {
     return Padding(
@@ -72,28 +88,7 @@ class _LoadsPageState extends State<LoadsPage> {
                     ),
                   ),
                 ),
-                Column(
-                  children: <Widget>[
-                    Text(
-                      name,
-                      style: TextStyle(
-                        fontSize: 20.0,
-                        color: Colors.black,
-                        fontFamily: "Roboto",
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    Text(
-                      _getDistance(pos).toString(),
-                      style: TextStyle(
-                        fontSize: 10.0,
-                        color: Colors.black,
-                        fontFamily: "Roboto",
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  ],
-                ),
+                Column(children: buildText(name)),
               ],
             ),
           ),
@@ -102,9 +97,49 @@ class _LoadsPageState extends State<LoadsPage> {
     );
   }
 
+  List<Widget> buildCustomCards() {
+    return _loads.keys.map((key) => customcard(key, _loads[key])).toList();
+  }
+
+  List<Widget> buildText(String name) {
+    List<Widget> textboit = List();
+    textboit.add(Text(
+      name,
+      style: TextStyle(
+        fontSize: 20.0,
+        color: Colors.black,
+        fontFamily: "Roboto",
+        fontWeight: FontWeight.w500,
+      ),
+    ));
+
+    if (_namesDistances[name].toString() == "null") {
+      textboit.add(Text(
+        "Calculating distance...",
+        style: TextStyle(
+          fontSize: 10.0,
+          color: Colors.black,
+          fontFamily: "Roboto",
+          fontWeight: FontWeight.w400,
+        ),
+      ));
+    } else {
+      textboit.add(Text(
+        (_namesDistances[name]).toStringAsFixed(2) + " m",
+        style: TextStyle(
+          fontSize: 10.0,
+          color: Colors.black,
+          fontFamily: "Roboto",
+          fontWeight: FontWeight.w400,
+        ),
+      ));
+    }
+    return textboit;
+  }
+
   @override
   Widget build(BuildContext context) {
-    _getLocation();
+    //_getLocation();
     return Scaffold(
         body: Stack(
       children: <Widget>[
@@ -116,14 +151,14 @@ class _LoadsPageState extends State<LoadsPage> {
           ),
         ),
         new ListView(
-          children: <Widget>[
-            customcard(names[0], positions[0]),
+          children: buildCustomCards(),
+
+          /*customcard(loads.keys[0].toString(), positions[0]),
             customcard(names[1], positions[1]),
             customcard(names[2], positions[2]),
-            customcard(names[3], positions[3]),
-            //customcard(tilenames[1], info[1], icons[1], infoBoxes[1], infoBoxesExtra[1]),
-            //customcard(tilenames[2], info[2], icons[2], infoBoxes[2], infoBoxesExtra[2]),
-          ],
+            customcard(names[3], positions[3]),*/
+          //customcard(tilenames[1], info[1], icons[1], infoBoxes[1], infoBoxesExtra[1]),
+          //customcard(tilenames[2], info[2], icons[2], infoBoxes[2], infoBoxesExtra[2]),
         )
       ],
     ));
