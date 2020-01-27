@@ -1,9 +1,21 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:loading/indicator/ball_grid_pulse_indicator.dart';
 import 'package:loading/loading.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
+
+
+//Let's define a DrawerItem data object
+class MarkerItem {
+  String title;
+  String icon;
+  double lat;
+  double lng;
+  MarkerItem(this.title, this.icon, this.lat, this.lng);
+}
 
 class MapPage extends StatefulWidget {
   @override
@@ -13,23 +25,26 @@ class MapPage extends StatefulWidget {
 class MapPageState extends State<MapPage> {
   GoogleMapController mapController;
   Position _currentPosition;
+
+  final markerItems = [
+    new MarkerItem("Truck 1", "assets/images/map_markers/truck/cyan.png", 51.158315, 4.967445),
+    new MarkerItem("Load 1", "assets/images/map_markers/load/red.png", 51.158401, 4.968479),
+    new MarkerItem("Load 2", "assets/images/map_markers/load/cyan.png", 51.157959, 4.961615),
+  ];
   
   List<Marker> allMarkers = [];
-  
+  BitmapDescriptor pinLocationIcon;
+
   @override
   void initState() {
     super.initState();
-    allMarkers.add(Marker(
-        markerId: MarkerId('testMarker'),
-        draggable: true,
-        onTap: () {
-          print('Marker Tapped');
-        },
-        position: LatLng(51.158315, 4.967445)));
+    _getLocation(); 
+    _createMarkers();
   }
 
-  void _onMapCreated(GoogleMapController controller) {
-      mapController = controller;
+  @override
+  void dispose() { 
+    super.dispose();
   }
   
   BorderRadiusGeometry radius = BorderRadius.only(
@@ -48,6 +63,25 @@ class MapPageState extends State<MapPage> {
     }).catchError((e) {
       print(e);
     });
+  }
+
+  void _createMarkers() {
+    for(var item in markerItems) {
+      // BitmapDescriptor.fromAssetImage(ImageConfiguration(devicePixelRatio: 2.5), item.icon).then((onValue) {
+      //   setState(() {
+      //     pinLocationIcon = onValue;
+      //   });
+      // });
+      allMarkers.add(
+        Marker(
+          markerId: MarkerId(item.title),
+          icon: BitmapDescriptor.fromAsset(item.icon),
+          // icon: pinLocationIcon,
+          draggable: true,
+          position: LatLng(item.lat, item.lng)
+        )
+      );
+    }
   }
 
   Widget _floatingCollapsed(){
@@ -83,7 +117,6 @@ class MapPageState extends State<MapPage> {
 
   @override
   Widget build(BuildContext context) {
-    _getLocation();
     if (_currentPosition == null) {    
       return Scaffold(
         body: Container(
@@ -104,11 +137,11 @@ class MapPageState extends State<MapPage> {
               myLocationButtonEnabled: true,
               myLocationEnabled: true,
               buildingsEnabled: true,
-              onMapCreated: _onMapCreated,
               initialCameraPosition: CameraPosition(
                 target: LatLng(_currentPosition.latitude, _currentPosition.longitude),
                 zoom: 18.0,
               ),
+              onMapCreated: (GoogleMapController controller) {},
               markers: Set.from(allMarkers)
             ),
           ),
