@@ -102,8 +102,8 @@ class _LoadsPageState extends State<LoadsPage> {
   }
 
   List<Widget> buildText(String name) {
-    List<Widget> textboit = List();
-    textboit.add(Text(
+    List<Widget> textWidgets = List();
+    textWidgets.add(Text(
       name,
       style: TextStyle(
         fontSize: 20.0,
@@ -114,7 +114,7 @@ class _LoadsPageState extends State<LoadsPage> {
     ));
 
     if (_namesDistances[name].toString() == "null") {
-      textboit.add(Text(
+      textWidgets.add(Text(
         "Calculating distance...",
         style: TextStyle(
           fontSize: 10.0,
@@ -124,7 +124,7 @@ class _LoadsPageState extends State<LoadsPage> {
         ),
       ));
     } else {
-      textboit.add(Text(
+      textWidgets.add(Text(
         (_namesDistances[name]).toStringAsFixed(2) + " m",
         style: TextStyle(
           fontSize: 10.0,
@@ -134,7 +134,7 @@ class _LoadsPageState extends State<LoadsPage> {
         ),
       ));
     }
-    return textboit;
+    return textWidgets;
   }
 
   @override
@@ -152,13 +152,6 @@ class _LoadsPageState extends State<LoadsPage> {
         ),
         new ListView(
           children: buildCustomCards(),
-
-          /*customcard(loads.keys[0].toString(), positions[0]),
-            customcard(names[1], positions[1]),
-            customcard(names[2], positions[2]),
-            customcard(names[3], positions[3]),*/
-          //customcard(tilenames[1], info[1], icons[1], infoBoxes[1], infoBoxesExtra[1]),
-          //customcard(tilenames[2], info[2], icons[2], infoBoxes[2], infoBoxesExtra[2]),
         )
       ],
     ));
