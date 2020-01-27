@@ -66,7 +66,7 @@ class MainDrawerState extends State<MainDrawer> {
       var d = widget.drawerItems[i];
       drawerOptions.add(new ListTile(
         leading: new Icon(d.icon),
-        title: new Text(d.title, style: TextStyle(fontFamily: 'Monsterrat')),
+        title: new Text(d.title, style: TextStyle(fontFamily: 'Montserrat')),
         enabled: d.enabled,
         selected: i == _selectedDrawerIndex,
         onTap: () => _onSelectItem(i),
@@ -89,7 +89,7 @@ class MainDrawerState extends State<MainDrawer> {
                   )
                 )
               ),
-            Text(widget.drawerItems[_selectedDrawerIndex].title, style: TextStyle(color: Colors.black, fontFamily: 'Roboto'))
+            Text(widget.drawerItems[_selectedDrawerIndex].title, style: TextStyle(color: Colors.black, fontFamily: 'Montserrat'))
           ],
         ),
         iconTheme: new IconThemeData(color: Colors.black),
@@ -102,8 +102,8 @@ class MainDrawerState extends State<MainDrawer> {
           children: <Widget>[
             //Lets Create a material design drawer header with account name, email,avatar
             new UserAccountsDrawerHeader(
-              accountName: new Text("Tyrone Jackson", style: TextStyle(fontFamily: 'Monsterrat')),
-              accountEmail: new Text("Truck driver"),
+              accountName: new Text("Tyrone Jackson", style: TextStyle(fontFamily: 'Montserrat', fontWeight: FontWeight.bold)),
+              accountEmail: new Text("Truck driver", style: TextStyle(fontFamily: 'Montserrat')),
               currentAccountPicture: new CircleAvatar(backgroundImage:
                 new NetworkImage("https://c.pxhere.com/images/0f/3f/4dbc54d34a6b984a6c5f283be804-1447673.jpg!d"),),
               decoration: new BoxDecoration(
@@ -122,12 +122,12 @@ class MainDrawerState extends State<MainDrawer> {
             new Expanded(child: new Align()),
             new ListTile(
               leading: new Icon(Icons.grid_off),
-              title: new Text("Log out of device", style: TextStyle(fontFamily: 'Monsterrat')),
+              title: new Text("Log out of device", style: TextStyle(fontFamily: 'Montserrat')),
               enabled: false
             ),
             new ListTile(
               leading: new Icon(Icons.exit_to_app),
-              title: new Text("Log Out", style: TextStyle(fontFamily: 'Monsterrat')),
+              title: new Text("Log Out", style: TextStyle(fontFamily: 'Montserrat')),
               onTap: () {
                 Navigator.pushReplacement(
                   context,
