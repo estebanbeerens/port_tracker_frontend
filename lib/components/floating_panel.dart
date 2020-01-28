@@ -10,7 +10,7 @@ class _FloatingPanelState extends State<FloatingPanel> {
 
   @override
   Widget build(BuildContext context) {
-    child: Container(
+    return Container(
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.all(Radius.circular(24.0)),
