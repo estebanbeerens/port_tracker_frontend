@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:port_tracker/pages/accidents_page.dart';
 import 'package:port_tracker/pages/home_page.dart';
+import 'package:port_tracker/pages/machine_page.dart';
 import 'package:port_tracker/pages/map_page.dart';
 import 'package:port_tracker/pages/qr_page.dart';
 import 'package:port_tracker/pages/settings_page.dart';
@@ -37,5 +39,19 @@ class Loads extends StatelessWidget {
   @override 
   Widget build(BuildContext context) {
     return LoadsPage();
+  }
+}
+
+class Machines extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MachinePage();
+  }
+}
+
+class Accidents extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return AccidentPage();
   }
 }

@@ -1,26 +1,14 @@
 import 'package:port_tracker/components/fragments.dart' as Fragments;
 import 'package:flutter/material.dart';
+import 'package:port_tracker/mock/drawer_item_mock.dart';
+import 'package:port_tracker/mock/user_item_mock.dart';
+import 'package:port_tracker/models/drawer_item.dart';
+import 'package:port_tracker/models/user.dart';
 import 'package:port_tracker/pages/login_page.dart';
-import 'package:port_tracker/services/auth_service.dart';
 
-//Let's define a DrawerItem data object
-class DrawerItem {
-  String title;
-  IconData icon;
-  bool enabled;
-  DrawerItem(this.title, this.icon, this.enabled);
-}
-
-// Our Homepage
+// Our main container
 class MainDrawer extends StatefulWidget {
   //Let's define our drawer items, strings and images
-  final drawerItems = [
-    new DrawerItem("Home", Icons.home, true),
-    new DrawerItem("Map", Icons.map, true),
-    new DrawerItem("QR Scanner", Icons.grid_on, true),
-    new DrawerItem("Nieuwe ladingen", Icons.settings_input_component, true),
-    new DrawerItem("Settings", Icons.settings, true)
-  ];
   //Let's Create and Return state for this 'StatefulWidget'
   @override
   State<StatefulWidget> createState() {
@@ -32,22 +20,65 @@ class MainDrawer extends StatefulWidget {
 class MainDrawerState extends State<MainDrawer> {
   int _selectedDrawerIndex = 0;
 
+  bool isModerator = true;
+  List<DrawerItem> drawerList;
+  User loggedInUser;
+  ListTile logOutOfDeviceTile;
+
+  @override
+  void initState() {
+    super.initState();
+    if (isModerator == true) {
+      loggedInUser = users[1];
+      drawerList = drawerItemsModerator;
+      logOutOfDeviceTile = ListTile();
+    } else {
+      loggedInUser = users[0];
+      drawerList = drawerItemsUser;
+      logOutOfDeviceTile = ListTile(
+        leading: Icon(Icons.grid_off),
+        title: Text("Log out of device", style: TextStyle(fontFamily: 'Montserrat')),
+        enabled: false
+      );
+    }
+  }
+
   //Let's use a switch statement to return the Fragment for a selected item
   _getDrawerFragment(int pos) {
-    switch (pos) {
-      case 0:
-        return new Fragments.Home();
-      case 1:
-        return new Fragments.Map();
-      case 2:
-        return new Fragments.Qr();
-      case 3:
-        return new Fragments.Loads();
-      case 4:
-        return new Fragments.Settings();
+    if(isModerator == true) {
+      switch (pos) {
+        case 0:
+          return new Fragments.Home();
+        case 1:
+          return new Fragments.Map();
+        case 2:
+          return new Fragments.Machines();
+        case 3:
+          return new Fragments.Loads();
+        case 4:
+          return new Fragments.Accidents();
+        case 5:
+          return new Fragments.Settings();
 
-      default:
-        return new Text("Error");
+        default:
+          return new Text("Error");
+      }
+    } else {
+      switch (pos) {
+        case 0:
+          return new Fragments.Home();
+        case 1:
+          return new Fragments.Map();
+        case 2:
+          return new Fragments.Qr();
+        case 3:
+          return new Fragments.Loads();
+        case 4:
+          return new Fragments.Settings();
+
+        default:
+          return new Text("Error");
+      }
     }
   }
 
@@ -62,8 +93,8 @@ class MainDrawerState extends State<MainDrawer> {
   Widget build(BuildContext context) {
     List<Widget> drawerOptions = [];
     //Let's create drawer list items. Each will have an icon and text
-    for (var i = 0; i < widget.drawerItems.length; i++) {
-      var d = widget.drawerItems[i];
+    for (var i = 0; i < drawerList.length; i++) {
+      var d = drawerList[i];
       drawerOptions.add(new ListTile(
         leading: new Icon(d.icon),
         title: new Text(d.title, style: TextStyle(fontFamily: 'Montserrat')),
@@ -89,7 +120,7 @@ class MainDrawerState extends State<MainDrawer> {
                   )
                 )
               ),
-            Text(widget.drawerItems[_selectedDrawerIndex].title, style: TextStyle(color: Colors.black, fontFamily: 'Montserrat'))
+            Text(drawerList[_selectedDrawerIndex].title, style: TextStyle(color: Colors.black, fontFamily: 'Montserrat'))
           ],
         ),
         iconTheme: new IconThemeData(color: Colors.black),
@@ -102,10 +133,10 @@ class MainDrawerState extends State<MainDrawer> {
           children: <Widget>[
             //Lets Create a material design drawer header with account name, email,avatar
             new UserAccountsDrawerHeader(
-              accountName: new Text("Tyrone Jackson", style: TextStyle(fontFamily: 'Montserrat', fontWeight: FontWeight.bold)),
-              accountEmail: new Text("Truck driver", style: TextStyle(fontFamily: 'Montserrat')),
+              accountName: new Text(loggedInUser.firstName + " " + loggedInUser.lastName, style: TextStyle(fontFamily: 'Montserrat', fontWeight: FontWeight.bold)),
+              accountEmail: new Text(loggedInUser.role, style: TextStyle(fontFamily: 'Montserrat')),
               currentAccountPicture: new CircleAvatar(backgroundImage:
-                new NetworkImage("https://c.pxhere.com/images/0f/3f/4dbc54d34a6b984a6c5f283be804-1447673.jpg!d"),),
+                new NetworkImage(loggedInUser.imagePath),),
               decoration: new BoxDecoration(
                 gradient: LinearGradient(
                   begin: FractionalOffset.bottomLeft,
@@ -120,11 +151,7 @@ class MainDrawerState extends State<MainDrawer> {
             new Column(children: drawerOptions),
             // new Divider(),
             new Expanded(child: new Align()),
-            new ListTile(
-              leading: new Icon(Icons.grid_off),
-              title: new Text("Log out of device", style: TextStyle(fontFamily: 'Montserrat')),
-              enabled: false
-            ),
+            logOutOfDeviceTile,
             new ListTile(
               leading: new Icon(Icons.exit_to_app),
               title: new Text("Log Out", style: TextStyle(fontFamily: 'Montserrat')),
