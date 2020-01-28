@@ -1,4 +1,4 @@
-import 'package:port_tracker/models/Marker_item.dart';
+import 'package:port_tracker/models/marker_item.dart';
 
   final markerItems = [
     new MarkerItem(0, "Truck 1", "assets/images/map_markers/truck/cyan.png", 51.158315, 4.967445),

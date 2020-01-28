@@ -8,7 +8,7 @@ import 'package:loading/indicator/ball_grid_pulse_indicator.dart';
 import 'package:loading/loading.dart';
 import 'package:port_tracker/components/floating_panel.dart';
 import 'package:port_tracker/mock/marker_item_mock.dart';
-import 'package:port_tracker/models/Marker_item.dart';
+import 'package:port_tracker/models/marker_item.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 // Class for the markers
@@ -24,7 +24,7 @@ class MapPageState extends State<MapPage> {
   List<Marker> allMarkers = [];
   MarkerItem selectedMarker;
 
-  PanelController floatingPanel = new PanelController();
+  PanelController floatingPanelMap = new PanelController();
 
   // Call _getLocation() and _createMarkers() when loading the page
   @override
@@ -53,7 +53,6 @@ class MapPageState extends State<MapPage> {
       print(e);
     });
   }
-
   // Creates all the markers
   void _createMarkers() {
     for(var item in markerItems) {
@@ -77,7 +76,7 @@ class MapPageState extends State<MapPage> {
             title: item.title,
             snippet: "Click for info",
             onTap: () {
-              floatingPanel.open();
+              floatingPanelMap.open();
             }
           )
         )
@@ -89,7 +88,7 @@ class MapPageState extends State<MapPage> {
   Widget _floatingCollapsed(){
     return new GestureDetector(
       onTap: () {
-        floatingPanel.open();
+        floatingPanelMap.open();
       },
       child: new Container(
         decoration: BoxDecoration(
@@ -101,26 +100,6 @@ class MapPageState extends State<MapPage> {
         ),
       )
     );
-  }
-
-  // The floating panel when it's opened
-  Widget _floatingPanel(){
-      return Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.all(Radius.circular(24.0)),
-          boxShadow: [
-            BoxShadow(
-              blurRadius: 20.0,
-              color: Colors.grey,
-            ),
-          ]
-        ),
-        margin: const EdgeInsets.all(24.0),
-        child: Center(
-          child: Text("No marker has been selected.")
-        ),
-      );
   }
 
   @override
@@ -140,7 +119,7 @@ class MapPageState extends State<MapPage> {
       return Scaffold(
         body: new SlidingUpPanel(
           renderPanelSheet: false,
-          panel: _floatingPanel(),
+          panel: FloatingPanel(),
           collapsed: _floatingCollapsed(),
           body: Center(
             child: GoogleMap(
@@ -159,12 +138,12 @@ class MapPageState extends State<MapPage> {
               markers: Set.from(allMarkers)
             ),
           ),
+          controller: floatingPanelMap,
           // Settings for backdrop when the sliding panel is opened
           backdropEnabled: true,
           backdropOpacity: 0.2,
           // Hiehgt of sliding panel when closed
           minHeight: 100,
-          controller: floatingPanel,
           ),
       );
     }
