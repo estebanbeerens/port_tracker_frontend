@@ -81,7 +81,7 @@ class _LoadsPageState extends State<LoadsPage> {
                     height: 75.0,
                     width: 75.0,
                     child: Icon(
-                      Icons.view_quilt,
+                      Icons.dashboard,
                       color: Colors.black,
                       size: 65.0,
                       semanticLabel: 'Logo of shipping',

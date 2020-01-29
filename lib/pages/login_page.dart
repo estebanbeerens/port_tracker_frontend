@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:port_tracker/components/main_drawer.dart';
 import 'package:port_tracker/services/auth_service.dart';
-import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -116,6 +115,7 @@ class _LoginPageState extends State<LoginPage> {
                                 style: TextStyle(
                                     fontSize:
                                         ScreenUtil.getInstance().setSp(45),
+                                    color: Colors.black,
                                     fontFamily: "Poppins-Bold",
                                     letterSpacing: .6)),
                             SizedBox(
@@ -124,8 +124,8 @@ class _LoginPageState extends State<LoginPage> {
                             Text("Username",
                                 style: TextStyle(
                                     fontFamily: "Poppins-Medium",
-                                    fontSize:
-                                        ScreenUtil.getInstance().setSp(26))),
+                                    color: Colors.black,
+                                    fontSize: ScreenUtil.getInstance().setSp(26))),
                             TextFormField(
                               onSaved: (value) => _username = value,
                               decoration: InputDecoration(
@@ -139,6 +139,7 @@ class _LoginPageState extends State<LoginPage> {
                             Text("Password",
                                 style: TextStyle(
                                     fontFamily: "Poppins-Medium",
+                                    color: Colors.black,
                                     fontSize:
                                         ScreenUtil.getInstance().setSp(26))),
                             TextFormField(
@@ -187,6 +188,7 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                             Text("Remember me",
                                 style: TextStyle(
+                                    color: Colors.black,
                                     fontSize: 12, fontFamily: "Poppins-Medium"))
                           ],
                         ),
@@ -253,7 +255,7 @@ class _LoginPageState extends State<LoginPage> {
                       children: <Widget>[
                         Text(
                           "New User? ",
-                          style: TextStyle(fontFamily: "Poppins-Medium"),
+                          style: TextStyle(fontFamily: "Poppins-Medium", color: Colors.black),
                         ),
                         InkWell(
                           onTap: () {},
@@ -271,16 +273,16 @@ class _LoginPageState extends State<LoginPage> {
           )
         ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
-          icon: Icon(Icons.broken_image),
-          label: Text("Cheat"),
-          backgroundColor: Color(0x39B1C3).withOpacity(0.7),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => MainDrawer()),
-            );
-          }),
+      // floatingActionButton: FloatingActionButton.extended(
+      //     icon: Icon(Icons.broken_image),
+      //     label: Text("Cheat"),
+      //     backgroundColor: Color(0x39B1C3).withOpacity(0.7),
+      //     onPressed: () {
+      //       Navigator.push(
+      //         context,
+      //         MaterialPageRoute(builder: (context) => MainDrawer()),
+      //       );
+      //     }),
     );
   }
 }

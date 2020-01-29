@@ -120,7 +120,9 @@ class MainDrawerState extends State<MainDrawer> {
                   )
                 )
               ),
-            Text(drawerList[_selectedDrawerIndex].title, style: TextStyle(color: Colors.black, fontFamily: 'Montserrat'))
+            Text(drawerList[_selectedDrawerIndex].title, style: TextStyle(
+              // color: Colors.black, 
+              fontFamily: 'Montserrat'))
           ],
         ),
         iconTheme: new IconThemeData(color: Colors.black),
@@ -154,7 +156,7 @@ class MainDrawerState extends State<MainDrawer> {
             logOutOfDeviceTile,
             new ListTile(
               leading: new Icon(Icons.exit_to_app),
-              title: new Text("Log Out", style: TextStyle(fontFamily: 'Montserrat')),
+              title: new Text("Log out", style: TextStyle(fontFamily: 'Montserrat')),
               onTap: () {
                 Navigator.pushReplacement(
                   context,
