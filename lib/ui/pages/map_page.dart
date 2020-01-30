@@ -6,10 +6,9 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:loading/indicator/ball_grid_pulse_indicator.dart';
 import 'package:loading/loading.dart';
-import 'package:port_tracker/components/floating_panel.dart';
-import 'package:port_tracker/marker_selector.dart';
+import 'package:port_tracker/ui/components/floating_panel.dart';
 import 'package:port_tracker/mock/marker_item_mock.dart';
-import 'package:provider/provider.dart';
+import 'package:port_tracker/models/marker_item.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 // Class for the markers
@@ -20,11 +19,10 @@ class MapPage extends StatefulWidget {
 }
 
 class MapPageState extends State<MapPage> {
-  var selectedMarker;
   Position _currentPosition;
   
   List<Marker> allMarkers = [];
-  // MarkerItem selectedMarker;
+  MarkerItem selectedMarker;
 
   PanelController floatingPanelMap = new PanelController();
 
@@ -55,19 +53,24 @@ class MapPageState extends State<MapPage> {
       print(e);
     });
   }
-
   // Creates all the markers
   void _createMarkers() {
     for(var item in markerItems) {
+      // BitmapDescriptor.fromAssetImage(ImageConfiguration(devicePixelRatio: 2.5), item.icon).then((onValue) {
+      //   setState(() {
+      //     pinLocationIcon = onValue;
+      //   });
+      // });
       allMarkers.add(
         Marker(
           markerId: MarkerId(item.id.toString()),
           icon: BitmapDescriptor.fromAsset(item.icon),
+          // icon: pinLocationIcon,
           draggable: true,
           position: LatLng(item.lat, item.lng),
           onTap: () {
+            selectedMarker = markerItems[item.id];
             log("Selected marker " + item.id.toString() + ": " + item.title.toString());
-            selectedMarker.setMarker = markerItems[item.id];
           },
           infoWindow: InfoWindow(
             title: item.title,
@@ -101,7 +104,6 @@ class MapPageState extends State<MapPage> {
 
   @override
   Widget build(BuildContext context) {
-    // selectedMarker = Provider.of<MarkerSelector>(context);
     // Check if the current position is known
     if (_currentPosition == null) {
       // The loading screen    
@@ -114,38 +116,35 @@ class MapPageState extends State<MapPage> {
     );
     } else {
       // The map screen
-      return ChangeNotifierProvider<MarkerSelector>(
-        create: (context) => MarkerSelector(),
-        child: Scaffold(
-          body: new SlidingUpPanel(
-            renderPanelSheet: false,
-            panel: FloatingPanel(),
-            collapsed: _floatingCollapsed(),
-            body: Center(
-              child: GoogleMap(
-                // Settings for the map
-                compassEnabled: true,
-                myLocationButtonEnabled: true,
-                myLocationEnabled: true,
-                buildingsEnabled: true,
-                // Set starting position on your current location
-                initialCameraPosition: CameraPosition(
-                  target: LatLng(_currentPosition.latitude, _currentPosition.longitude),
-                  zoom: 18.0,
-                ),
-                onMapCreated: (GoogleMapController controller) {},
-                // Set the markers on the map
-                markers: Set.from(allMarkers)
+      return Scaffold(
+        body: new SlidingUpPanel(
+          renderPanelSheet: false,
+          panel: FloatingPanel(),
+          collapsed: _floatingCollapsed(),
+          body: Center(
+            child: GoogleMap(
+              // Settings for the map
+              compassEnabled: true,
+              myLocationButtonEnabled: true,
+              myLocationEnabled: true,
+              buildingsEnabled: true,
+              // Set starting position on your current location
+              initialCameraPosition: CameraPosition(
+                target: LatLng(_currentPosition.latitude, _currentPosition.longitude),
+                zoom: 18.0,
               ),
+              onMapCreated: (GoogleMapController controller) {},
+              // Set the markers on the map
+              markers: Set.from(allMarkers)
             ),
-            controller: floatingPanelMap,
-            // Settings for backdrop when the sliding panel is opened
-            backdropEnabled: true,
-            backdropOpacity: 0.2,
-            // Hiehgt of sliding panel when closed
-            minHeight: 100,
-            ),
-        ),
+          ),
+          controller: floatingPanelMap,
+          // Settings for backdrop when the sliding panel is opened
+          backdropEnabled: true,
+          backdropOpacity: 0.2,
+          // Hiehgt of sliding panel when closed
+          minHeight: 100,
+          ),
       );
     }
   }

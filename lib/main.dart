@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:port_tracker/pages/login_page.dart';
-import 'package:port_tracker/pages/home_page.dart';
+import 'package:port_tracker/ui/pages/login_page.dart';
+import 'package:port_tracker/ui/pages/home_page.dart';
 import 'package:port_tracker/services/auth_service.dart';
 import 'package:provider/provider.dart';
 
