@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:port_tracker/pages/login_page.dart';
+import 'package:port_tracker/ui/pages/login_page.dart';
 
 class SignupPage extends StatefulWidget {
   @override

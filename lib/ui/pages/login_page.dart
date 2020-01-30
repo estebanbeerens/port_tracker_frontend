@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:port_tracker/ui/navigation/main_drawer.dart';
 import 'package:port_tracker/services/auth_service.dart';
+import 'package:port_tracker/ui/pages/signup_page.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -12,7 +13,9 @@ class _LoginPageState extends State<LoginPage> {
   bool _isSelected = false;
   final _formKey = GlobalKey<FormState>();
   String _password;
-  String _username;
+  String _email;
+  String _verificatiecode;
+  bool _autoValidate = false;
 
   void _radio() {
     setState(() {
@@ -72,6 +75,7 @@ class _LoginPageState extends State<LoginPage> {
           ),
           SingleChildScrollView(
             child: Form(
+              autovalidate: _autoValidate,
               key: _formKey,
               child: Padding(
                 padding: EdgeInsets.only(left: 28.0, right: 28.0, top: 60.0),
@@ -121,15 +125,17 @@ class _LoginPageState extends State<LoginPage> {
                             SizedBox(
                               height: ScreenUtil.getInstance().setHeight(30),
                             ),
-                            Text("Username",
+                            Text("Email",
                                 style: TextStyle(
                                     fontFamily: "Poppins-Medium",
                                     color: Colors.black,
                                     fontSize: ScreenUtil.getInstance().setSp(26))),
                             TextFormField(
-                              onSaved: (value) => _username = value,
+                              //onSaved: (value) => _username = value,
+                              keyboardType: TextInputType.emailAddress,
+                              validator: validateEmail,
                               decoration: InputDecoration(
-                                  hintText: "Username",
+                                  hintText: "jan.janssen@mail.be",
                                   hintStyle: TextStyle(
                                       color: Colors.grey, fontSize: 12.0)),
                             ),
@@ -213,7 +219,8 @@ class _LoginPageState extends State<LoginPage> {
                               child: InkWell(
                                 onTap: () {
                                   //check voor login
-                                  final form = _formKey.currentState;
+                                  _validateInputs();
+                                  /*final form = _formKey.currentState;
                                   form.save();
 
                                   if(form.validate()) {
@@ -228,7 +235,7 @@ class _LoginPageState extends State<LoginPage> {
                                     }
 
                                     print("$_username $_password");
-                                  }
+                                  }*/
                                 },
                                 child: Center(
                                   child: Text("SIGN IN",
@@ -258,7 +265,14 @@ class _LoginPageState extends State<LoginPage> {
                           style: TextStyle(fontFamily: "Poppins-Medium", color: Colors.black),
                         ),
                         InkWell(
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.pushReplacement(
+                                        context, 
+                                        MaterialPageRoute(
+                                          settings: RouteSettings(name: "SignupPage"),
+                                          builder: (BuildContext context) => SignupPage()),
+                                      );
+                          },
                           child: Text("Sign up",
                               style: TextStyle(
                                   color: Color(0xFF5d74e3),
@@ -273,16 +287,44 @@ class _LoginPageState extends State<LoginPage> {
           )
         ],
       ),
-      // floatingActionButton: FloatingActionButton.extended(
-      //     icon: Icon(Icons.broken_image),
-      //     label: Text("Cheat"),
-      //     backgroundColor: Color(0x39B1C3).withOpacity(0.7),
-      //     onPressed: () {
-      //       Navigator.push(
-      //         context,
-      //         MaterialPageRoute(builder: (context) => MainDrawer()),
-      //       );
-      //     }),
+      floatingActionButton: FloatingActionButton.extended(
+          icon: Icon(Icons.broken_image),
+          label: Text("Cheat"),
+          backgroundColor: Color(0x39B1C3).withOpacity(0.7),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => MainDrawer()),
+            );
+          }),
     );
+  }
+  void _validateInputs() {
+    if (_formKey.currentState.validate()) {
+      //If all data are correct then save data to out variables
+      _formKey.currentState.save();
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+            settings: RouteSettings(name: "MainDrawer"),
+            builder: (BuildContext context) => MainDrawer()),
+      );
+    } else {
+      //If all data are not valid then start auto validation.
+      setState(() {
+        _autoValidate = true;
+      });
+    }
+  }
+
+  //check if string is an email address based on a regexp
+  String validateEmail(String value) {
+    Pattern pattern =
+        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+    RegExp regex = new RegExp(pattern);
+    if (!regex.hasMatch(value))
+      return 'Enter Valid Email';
+    else
+      return null;
   }
 }
