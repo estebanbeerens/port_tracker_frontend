@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    // Sets the application to always display in portrait mode
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);

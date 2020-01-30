@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:port_tracker/ui/styles/text_style.dart';
 
+// CustomCard is the card widget that we generally use
+// TODO: Remove hard coded names and icons to add names from mock/database instead
 class CustomCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -19,6 +21,7 @@ class CustomCard extends StatelessWidget {
   }
 }
 
+// The card with text on it several things can be displayed here
 final homeCard = new Container(
   child: new Container(
   margin: new EdgeInsets.only(
@@ -32,9 +35,12 @@ final homeCard = new Container(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: <Widget>[
       new Container(height: 4.0),
+      // Title
       new Text("5 ton coke", style: Style.titleTextStyle),
       new Container(height: 10.0),
-      new Text("VZW Gran Colombia", style: Style.commonTextStyle),    
+      // Description / Company
+      new Text("VZW Gran Colombia", style: Style.commonTextStyle),
+      // The divider
       new Container(
         margin: new EdgeInsets.symmetric(vertical: 8.0),
         height: 2.0,
@@ -48,6 +54,8 @@ final homeCard = new Container(
             child: new Row(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
+                // Distance from current location, can be changed
+                // TODO: perhaps implement distance calculator from loads_page.dart here as well?
                 new Icon(Icons.location_searching, color: Colors.black,),
                 new Container(width: 8.0),
                 new Text("500 m")
@@ -75,6 +83,7 @@ final homeCard = new Container(
   ),
 );
 
+// The thumbnail for the card, AKA the icon in the circle on the left of the card
 final homeTumbnail = new Container(
   margin: new EdgeInsets.symmetric(
     vertical: 16.0
@@ -87,6 +96,7 @@ final homeTumbnail = new Container(
         height: 97.0,
         width: 97.0,
         child: Center(
+          // Custom icon goes here
           child: Icon(Icons.dashboard, size: 80.0, color: Color(0x333333).withOpacity(1)),
         ),
       ),

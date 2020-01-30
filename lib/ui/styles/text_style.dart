@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class Style {
   static final baseTextStyle = const TextStyle(
-    fontFamily: 'Poppins'
+    fontFamily: 'Roboto'
   );
   static final smallTextStyle = commonTextStyle.copyWith(
     fontSize: 9.0,

@@ -5,7 +5,7 @@ class FloatingPanel extends StatefulWidget {
   _FloatingPanelState createState() => _FloatingPanelState();
 }
 
-// The floating panel when it's opened
+// The floating panel for the map when it's opened
 class _FloatingPanelState extends State<FloatingPanel> {
 
   @override
