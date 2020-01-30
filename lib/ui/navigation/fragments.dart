@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:port_tracker/pages/accidents_page.dart';
-import 'package:port_tracker/pages/home_page.dart';
-import 'package:port_tracker/pages/machine_page.dart';
-import 'package:port_tracker/pages/map_page.dart';
-import 'package:port_tracker/pages/qr_page.dart';
-import 'package:port_tracker/pages/settings_page.dart';
-import 'package:port_tracker/pages/loads_page.dart';
+import 'package:port_tracker/ui/pages/accidents_page.dart';
+import 'package:port_tracker/ui/pages/home_page.dart';
+import 'package:port_tracker/ui/pages/machine_page.dart';
+import 'package:port_tracker/ui/pages/map_page.dart';
+import 'package:port_tracker/ui/pages/qr_page.dart';
+import 'package:port_tracker/ui/pages/settings_page.dart';
+import 'package:port_tracker/ui/pages/loads_page.dart';
   
 class Home extends StatelessWidget {
   @override

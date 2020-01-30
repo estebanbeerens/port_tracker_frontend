@@ -1,10 +1,10 @@
-import 'package:port_tracker/components/fragments.dart' as Fragments;
+import 'package:port_tracker/ui/navigation/fragments.dart' as Fragments;
 import 'package:flutter/material.dart';
 import 'package:port_tracker/mock/drawer_item_mock.dart';
 import 'package:port_tracker/mock/user_item_mock.dart';
 import 'package:port_tracker/models/drawer_item.dart';
 import 'package:port_tracker/models/user.dart';
-import 'package:port_tracker/pages/login_page.dart';
+import 'package:port_tracker/ui/pages/login_page.dart';
 
 // Our main container
 class MainDrawer extends StatefulWidget {
