@@ -6,7 +6,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:loading/indicator/ball_grid_pulse_indicator.dart';
 import 'package:loading/loading.dart';
-import 'package:port_tracker/components/floating_panel.dart';
+import 'package:port_tracker/ui/components/floating_panel.dart';
 import 'package:port_tracker/mock/marker_item_mock.dart';
 import 'package:port_tracker/models/marker_item.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:port_tracker/components/main_drawer.dart';
+import 'package:port_tracker/ui/navigation/main_drawer.dart';
 import 'package:port_tracker/services/auth_service.dart';
 
 class LoginPage extends StatefulWidget {
