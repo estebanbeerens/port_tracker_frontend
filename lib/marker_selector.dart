@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:port_tracker/models/marker_item.dart';
 
 // Parent file for floating_panel.dart and map_page.dart
-// TODO: Make state management work
 
 class MarkerSelector with ChangeNotifier {
   MarkerItem _selectedMarker;
