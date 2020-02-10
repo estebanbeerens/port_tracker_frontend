@@ -1,59 +1,26 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:port_tracker/ui/navigation/main_drawer.dart';
-import 'package:port_tracker/services/auth_service.dart';
-import 'package:port_tracker/ui/pages/signup_page.dart';
+import 'package:port_tracker/ui/pages/login_page.dart';
 
-class LoginPage extends StatefulWidget {
+class SignupPage extends StatefulWidget {
   @override
-  _LoginPageState createState() => new _LoginPageState();
+  _SignupPageState createState() => new _SignupPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
-  bool _isSelected = false;
+class _SignupPageState extends State<SignupPage> {
   final _formKey = GlobalKey<FormState>();
-  String _password;
   String _email;
+  String _password;
   String _verificatiecode;
   bool _autoValidate = false;
-
-  void _radio() {
-    setState(() {
-      _isSelected = !_isSelected;
-    });
-  }
-
-  Widget radioButton(bool isSelected) => Container(
-        width: 16.0,
-        height: 16.0,
-        padding: EdgeInsets.all(2.0),
-        decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            border: Border.all(width: 2.0, color: Colors.black)),
-        child: isSelected
-            ? Container(
-                width: double.infinity,
-                height: double.infinity,
-                decoration:
-                    BoxDecoration(shape: BoxShape.circle, color: Colors.black),
-              )
-            : Container(),
-      );
-
-  Widget horizontalLine() => Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16.0),
-        child: Container(
-          width: ScreenUtil.getInstance().setWidth(120),
-          height: 1.0,
-          color: Colors.black26.withOpacity(.2),
-        ),
-      );
 
   @override
   Widget build(BuildContext context) {
     ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
     ScreenUtil.instance =
-        ScreenUtil(width: 750, height: 1334, allowFontScaling: true);
+        ScreenUtil(width: 750, height: 1125, allowFontScaling: true);
+
     return new Scaffold(
       backgroundColor: Colors.white,
       resizeToAvoidBottomPadding: true,
@@ -75,8 +42,8 @@ class _LoginPageState extends State<LoginPage> {
           ),
           SingleChildScrollView(
             child: Form(
-              autovalidate: _autoValidate,
               key: _formKey,
+              autovalidate: _autoValidate,
               child: Padding(
                 padding: EdgeInsets.only(left: 28.0, right: 28.0, top: 60.0),
                 child: Column(
@@ -115,7 +82,7 @@ class _LoginPageState extends State<LoginPage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text("Login",
+                            Text("Create account",
                                 style: TextStyle(
                                     fontSize:
                                         ScreenUtil.getInstance().setSp(45),
@@ -129,7 +96,8 @@ class _LoginPageState extends State<LoginPage> {
                                 style: TextStyle(
                                     fontFamily: "Poppins-Medium",
                                     color: Colors.black,
-                                    fontSize: ScreenUtil.getInstance().setSp(26))),
+                                    fontSize:
+                                        ScreenUtil.getInstance().setSp(26))),
                             TextFormField(
                               //onSaved: (value) => _username = value,
                               keyboardType: TextInputType.emailAddress,
@@ -149,10 +117,26 @@ class _LoginPageState extends State<LoginPage> {
                                     fontSize:
                                         ScreenUtil.getInstance().setSp(26))),
                             TextFormField(
-                              onSaved: (value) => _password = value,
+                              //onSaved: (value) => _password = value,
                               obscureText: true,
                               decoration: InputDecoration(
                                   hintText: "Password",
+                                  hintStyle: TextStyle(
+                                      color: Colors.grey, fontSize: 12.0)),
+                            ),
+                            SizedBox(
+                              height: ScreenUtil.getInstance().setHeight(35),
+                            ),
+                            Text("Verificatiecode",
+                                style: TextStyle(
+                                    fontFamily: "Poppins-Medium",
+                                    color: Colors.black,
+                                    fontSize:
+                                        ScreenUtil.getInstance().setSp(26))),
+                            TextFormField(
+                              //onSaved: (value) => _password = value,
+                              decoration: InputDecoration(
+                                  hintText: "Verificatiecode",
                                   hintStyle: TextStyle(
                                       color: Colors.grey, fontSize: 12.0)),
                             ),
@@ -185,17 +169,6 @@ class _LoginPageState extends State<LoginPage> {
                             SizedBox(
                               width: 12.0,
                             ),
-                            GestureDetector(
-                              onTap: _radio,
-                              child: radioButton(_isSelected),
-                            ),
-                            SizedBox(
-                              width: 8.0,
-                            ),
-                            Text("Remember me",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 12, fontFamily: "Poppins-Medium"))
                           ],
                         ),
                         InkWell(
@@ -218,27 +191,26 @@ class _LoginPageState extends State<LoginPage> {
                               color: Colors.transparent,
                               child: InkWell(
                                 onTap: () {
-                                  //check voor login
                                   _validateInputs();
+                                  //check voor login
                                   /*final form = _formKey.currentState;
                                   form.save();
 
-                                  if(form.validate()) {
-                                    print(AuthService().loginUser(username: _username, password: _password).toString());
-                                    if (AuthService().loginUser(username: _username, password: _password) != null) {
-                                      Navigator.pushReplacement(
-                                        context, 
-                                        MaterialPageRoute(
-                                          settings: RouteSettings(name: "MainDrawer"),
-                                          builder: (BuildContext context) => MainDrawer()),
-                                      );
-                                    }
-
-                                    print("$_username $_password");
+                                  if (form.validate()) {
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          settings:
+                                              RouteSettings(name: "LoginPage"),
+                                          builder: (BuildContext context) =>
+                                              LoginPage()),
+                                    );
                                   }*/
+
+                                  //print("$_username $_password");
                                 },
                                 child: Center(
-                                  child: Text("SIGN IN",
+                                  child: Text("SIGN UP",
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontFamily: "Poppins-Bold",
@@ -257,29 +229,6 @@ class _LoginPageState extends State<LoginPage> {
                     SizedBox(
                       height: ScreenUtil.getInstance().setHeight(30),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Text(
-                          "New User? ",
-                          style: TextStyle(fontFamily: "Poppins-Medium", color: Colors.black),
-                        ),
-                        InkWell(
-                          onTap: () {
-                            Navigator.pushReplacement(
-                                        context, 
-                                        MaterialPageRoute(
-                                          settings: RouteSettings(name: "SignupPage"),
-                                          builder: (BuildContext context) => SignupPage()),
-                                      );
-                          },
-                          child: Text("Sign up",
-                              style: TextStyle(
-                                  color: Color(0xFF5d74e3),
-                                  fontFamily: "Poppins-Bold")),
-                        )
-                      ],
-                    )
                   ],
                 ),
               ),
@@ -287,18 +236,19 @@ class _LoginPageState extends State<LoginPage> {
           )
         ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
-          icon: Icon(Icons.broken_image),
-          label: Text("Cheat"),
-          backgroundColor: Color(0x39B1C3).withOpacity(0.7),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => MainDrawer()),
-            );
-          }),
+      // floatingActionButton: FloatingActionButton.extended(
+      //     icon: Icon(Icons.broken_image),
+      //     label: Text("Cheat"),
+      //     backgroundColor: Color(0x39B1C3).withOpacity(0.7),
+      //     onPressed: () {
+      //       Navigator.push(
+      //         context,
+      //         MaterialPageRoute(builder: (context) => MainDrawer()),
+      //       );
+      //     }),
     );
   }
+
   void _validateInputs() {
     if (_formKey.currentState.validate()) {
       //If all data are correct then save data to out variables
@@ -306,8 +256,8 @@ class _LoginPageState extends State<LoginPage> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-            settings: RouteSettings(name: "MainDrawer"),
-            builder: (BuildContext context) => MainDrawer()),
+            settings: RouteSettings(name: "LoginPage"),
+            builder: (BuildContext context) => LoginPage()),
       );
     } else {
       //If all data are not valid then start auto validation.
@@ -317,7 +267,6 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  //check if string is an email address based on a regexp
   String validateEmail(String value) {
     Pattern pattern =
         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
