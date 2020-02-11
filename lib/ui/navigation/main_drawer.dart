@@ -1,9 +1,9 @@
 import 'package:geolocator/geolocator.dart';
 import 'package:port_tracker/ui/navigation/fragments.dart' as Fragments;
 import 'package:flutter/material.dart';
-import 'package:port_tracker/mock/user_item_mock.dart';
+import 'package:port_tracker/mock/account_mock.dart';
 import 'package:port_tracker/models/drawer_item.dart';
-import 'package:port_tracker/models/user.dart';
+import 'package:port_tracker/models/account.dart';
 import 'package:port_tracker/ui/pages/login_page.dart';
 
 // Our main container
@@ -25,19 +25,26 @@ class MainDrawerState extends State<MainDrawer> {
   MainDrawerState(this._selectedDrawerIndex, this._selectedMarkerPosition);
 
   bool isModerator = true;
+  String imagePath;
   List<DrawerItem> drawerList;
-  User loggedInUser;
+  Account loggedInUser;
   ListTile logOutOfDeviceTile;
 
   @override
   void initState() {
     super.initState();
+    _checkIfAdmin();
+  }
+
+  _checkIfAdmin() {
     if (isModerator == true) {
-      loggedInUser = users[1];
+      loggedInUser = accounts[1];
+      imagePath = "assets/images/admin.png";
       drawerList = drawerItemsModerator;
       logOutOfDeviceTile = ListTile();
     } else {
-      loggedInUser = users[0];
+      loggedInUser = accounts[0];
+      imagePath = "assets/images/worker.png";
       drawerList = drawerItemsUser;
       logOutOfDeviceTile = ListTile(
           leading: Icon(Icons.grid_off),
@@ -139,10 +146,10 @@ class MainDrawerState extends State<MainDrawer> {
                   loggedInUser.firstName + " " + loggedInUser.lastName,
                   style: TextStyle(
                       fontFamily: 'Montserrat', fontWeight: FontWeight.bold)),
-              accountEmail: new Text(loggedInUser.role,
+              accountEmail: new Text(loggedInUser.roles[0],
                   style: TextStyle(fontFamily: 'Montserrat')),
               currentAccountPicture: new CircleAvatar(
-                backgroundImage: new NetworkImage(loggedInUser.imagePath),
+                backgroundImage: new AssetImage(imagePath),
               ),
               decoration: new BoxDecoration(
                 gradient: LinearGradient(

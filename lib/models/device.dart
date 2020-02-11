@@ -1,17 +1,12 @@
-import 'package:port_tracker/models/feature.dart';
 import 'package:port_tracker/models/load.dart';
-import 'package:port_tracker/models/location_log.dart';
 
 class Device {
-  int id;
+  String id;
   String name;
   String type;
-  int connectedAccountId;
-  LocationLog locationLog;
-  List<int> historyAccountsId;
-  List<Feature> features;
-  List<DateTime> historyLogin;
-  List<DateTime> historyLogout;
+  String connectedAccountId;
+  List<String> historyAccountsId;
   List<Load> loads;
-  DateTime timestamp;
+  DateTime creationDate;
+  Device(this.id, this.name, this.type, this.connectedAccountId, this.historyAccountsId, this.loads, this.creationDate);
 }

@@ -1,5 +1,5 @@
 class Load {
-  int id;
+  String id;
   double startLat;
   double startLng;
   double destLat;
@@ -10,5 +10,5 @@ class Load {
   String from;
   String to;
   String firm;
-  Load(this.startLat, this.startLng, this.destLat, this.destLng, this.finished, this.name, this.description, this.from, this.to, this.firm);
+  Load(this.id, this.startLat, this.startLng, this.destLat, this.destLng, this.finished, this.name, this.description, this.from, this.to, this.firm);
 }
