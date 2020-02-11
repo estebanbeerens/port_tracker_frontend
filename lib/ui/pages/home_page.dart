@@ -3,10 +3,10 @@ import 'package:port_tracker/functions/card_creator.dart';
 
 class HomePage extends StatefulWidget {
   @override
-  HomePageState createState() => HomePageState();
+  _HomePageState createState() => _HomePageState();
 }
 
-class HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,7 +16,7 @@ class HomePageState extends State<HomePage> {
               image: new DecorationImage(
                   image: new AssetImage('assets/images/background.png'),
                   fit: BoxFit.cover))),
-      new ListView(children: createLoadCards())
+      new ListView(children: createAllLoadCards()  + createAllDeviceCards())
     ]));
   }
 }

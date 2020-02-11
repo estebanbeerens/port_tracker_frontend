@@ -21,7 +21,7 @@ class _LoadsPageState extends State<LoadsPage> {
           ),
         ),
         new ListView(
-          children: createLoadCards(),
+          children: createAllLoadCards(),
         )
       ],
     ));

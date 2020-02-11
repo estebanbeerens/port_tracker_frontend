@@ -1,25 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:port_tracker/functions/card_creator.dart';
 
-class MachinePage extends StatelessWidget {
+class MachinePage extends StatefulWidget {
+  @override
+  _MachinePageState createState() => _MachinePageState();
+}
 
+class _MachinePageState extends State<MachinePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: new Stack(
-        children: <Widget>[
-          new Container(
-            decoration: new BoxDecoration(
-              image: new DecorationImage(
+        body: new Stack(
+      children: <Widget>[
+        new Container(
+          decoration: new BoxDecoration(
+            image: new DecorationImage(
                 image: new AssetImage('assets/images/background.png'),
-                fit: BoxFit.cover
-              ),
-            ),
+                fit: BoxFit.cover),
           ),
-          new Center(
-           child: new Text("Machines", style: new TextStyle(fontSize: 35.0),),
-          )
-        ],
-      )
-    );
+        ),
+        new ListView(
+          children: createAllDeviceCards(),
+        )
+      ],
+    ));
   }
 }

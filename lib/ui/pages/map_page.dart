@@ -6,11 +6,13 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:loading/indicator/ball_grid_pulse_indicator.dart';
 import 'package:loading/loading.dart';
-import 'package:port_tracker/ui/components/floating_panel.dart';
+import 'package:port_tracker/mock/device_mock.dart';
 import 'package:port_tracker/mock/load_mock.dart';
+import 'package:port_tracker/mock/location_mock.dart';
 import 'package:port_tracker/models/marker_item.dart';
 import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:port_tracker/ui/components/floating_panel.dart';
 
 // Class for the markers
 
@@ -81,6 +83,17 @@ class MapPageState extends State<MapPage> {
           "assets/images/map_markers/load/cyan.png",
           load.startLat,
           load.startLng,
+          true));
+      id++;
+    }
+    for (var device in devices) {
+      markerItems.add(new MarkerItem(
+          id,
+          device.name,
+          device.type,
+          "assets/images/map_markers/truck/cyan.png",
+          locations[0].lat,
+          locations[0].lng,
           true));
       id++;
     }
