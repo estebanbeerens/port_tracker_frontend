@@ -294,7 +294,7 @@ class _LoginPageState extends State<LoginPage> {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => MainDrawer()),
+              MaterialPageRoute(builder: (context) => MainDrawer(0, null)),
             );
           }),
     );
@@ -307,7 +307,7 @@ class _LoginPageState extends State<LoginPage> {
         context,
         MaterialPageRoute(
             settings: RouteSettings(name: "MainDrawer"),
-            builder: (BuildContext context) => MainDrawer()),
+            builder: (BuildContext context) => MainDrawer(0, null)),
       );
     } else {
       //If all data are not valid then start auto validation.

@@ -15,12 +15,18 @@ import 'package:sliding_up_panel/sliding_up_panel.dart';
 // Class for the markers
 
 class MapPage extends StatefulWidget {
+  final Position _selectedMarkerPosition;
+  MapPage(this._selectedMarkerPosition);
+
   @override
-  State<MapPage> createState() => MapPageState();
+  State<MapPage> createState() => MapPageState(_selectedMarkerPosition);
 }
 
 class MapPageState extends State<MapPage> {
-  Position _currentPosition;
+  Position _selectedMarkerPosition;
+  MapPageState(this._selectedMarkerPosition);
+
+  Position _startPosition;
   MarkerItem _selectedMarker;
 
   List<Marker> allMarkers = [];
@@ -31,13 +37,22 @@ class MapPageState extends State<MapPage> {
   @override
   void initState() {
     super.initState();
-    _getLocation();
+    _createInitialPosition();
     _createMarkers();
   }
 
   @override
   void dispose() {
     super.dispose();
+  }
+
+  void _createInitialPosition() async {
+    log(_selectedMarkerPosition.toString());
+    if (_selectedMarkerPosition != null) {
+      _startPosition = _selectedMarkerPosition;
+    } else {
+      _getLocation();
+    }
   }
 
   // Function that gets the current location and puts it in _currentPosition
@@ -48,7 +63,7 @@ class MapPageState extends State<MapPage> {
         .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
         .then((Position position) {
       setState(() {
-        _currentPosition = position;
+        _startPosition = position;
       });
     }).catchError((e) {
       print(e);
@@ -125,7 +140,7 @@ class MapPageState extends State<MapPage> {
   @override
   Widget build(BuildContext context) {
     // Check if the current position is known
-    if (_currentPosition == null) {
+    if (_startPosition == null) {
       // The loading screen
       return Scaffold(
         body: Container(
@@ -156,7 +171,7 @@ class MapPageState extends State<MapPage> {
                 // Set starting position on your current location
                 initialCameraPosition: CameraPosition(
                   target: LatLng(
-                      _currentPosition.latitude, _currentPosition.longitude),
+                      _startPosition.latitude, _startPosition.longitude),
                   zoom: 18.0,
                 ),
                 onMapCreated: (GoogleMapController controller) {},

@@ -1,12 +1,15 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:port_tracker/functions/get_distance.dart';
+import 'package:port_tracker/ui/navigation/main_drawer.dart';
 import 'package:port_tracker/ui/styles/text_style.dart';
 
 // CustomCard is the card widget that we generally use
 class CustomCard extends StatelessWidget {
   final String name;
-  final String firm;
+  final String deviceOrFirm;
   final Position position;
   final bool isLoad;
 
@@ -37,7 +40,7 @@ class CustomCard extends StatelessWidget {
                     new Text(name, style: Style.titleTextStyle),
                     new Container(height: 10.0),
                     // Description / Company
-                    new Text(firm, style: Style.commonTextStyle),
+                    new Text(deviceOrFirm, style: Style.commonTextStyle),
                     // The divider
                     new Container(
                         margin: new EdgeInsets.symmetric(vertical: 8.0),
@@ -69,7 +72,13 @@ class CustomCard extends StatelessWidget {
                             ],
                           ),
                           onPressed: () {
-                            print("Pressed");
+                            log("Go to location of " + name);
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  settings: RouteSettings(name: "MapPage"),
+                                  builder: (BuildContext context) => MainDrawer(1, position)),
+                            );
                           },
                         ))
                       ],
@@ -111,5 +120,5 @@ class CustomCard extends StatelessWidget {
         ));
   }
 
-  CustomCard(this.name, this.firm, this.isLoad, this.position);
+  CustomCard(this.name, this.deviceOrFirm, this.isLoad, this.position);
 }
