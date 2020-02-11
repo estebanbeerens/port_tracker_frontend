@@ -1,7 +1,6 @@
 import 'package:geolocator/geolocator.dart';
 import 'package:port_tracker/ui/navigation/fragments.dart' as Fragments;
 import 'package:flutter/material.dart';
-import 'package:port_tracker/mock/drawer_item_mock.dart';
 import 'package:port_tracker/mock/user_item_mock.dart';
 import 'package:port_tracker/models/drawer_item.dart';
 import 'package:port_tracker/models/user.dart';
@@ -60,10 +59,6 @@ class MainDrawerState extends State<MainDrawer> {
           return new Fragments.Machines();
         case 3:
           return new Fragments.Loads();
-        case 4:
-          return new Fragments.Accidents();
-        case 5:
-          return new Fragments.Settings();
 
         default:
           return new Text("Error");
@@ -78,8 +73,6 @@ class MainDrawerState extends State<MainDrawer> {
           return new Fragments.Qr();
         case 3:
           return new Fragments.Loads();
-        case 4:
-          return new Fragments.Settings();
 
         default:
           return new Text("Error");
