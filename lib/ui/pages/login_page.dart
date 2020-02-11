@@ -266,12 +266,12 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         InkWell(
                           onTap: () {
-                            Navigator.pushReplacement(
-                                        context, 
-                                        MaterialPageRoute(
-                                          settings: RouteSettings(name: "SignupPage"),
-                                          builder: (BuildContext context) => SignupPage()),
-                                      );
+                            Navigator.push(
+                              context, 
+                              MaterialPageRoute(
+                                settings: RouteSettings(name: "SignupPage"),
+                                builder: (BuildContext context) => SignupPage()),
+                            );
                           },
                           child: Text("Sign up",
                               style: TextStyle(
@@ -292,7 +292,7 @@ class _LoginPageState extends State<LoginPage> {
           label: Text("Cheat"),
           backgroundColor: Color(0x39B1C3).withOpacity(0.7),
           onPressed: () {
-            Navigator.push(
+            Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (context) => MainDrawer(0, null)),
             );

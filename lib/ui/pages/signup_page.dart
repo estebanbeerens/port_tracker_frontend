@@ -45,15 +45,23 @@ class _SignupPageState extends State<SignupPage> {
               key: _formKey,
               autovalidate: _autoValidate,
               child: Padding(
-                padding: EdgeInsets.only(left: 28.0, right: 28.0, top: 60.0),
+                padding: EdgeInsets.only(left: 28.0, right: 28.0, top: 34.0),
                 child: Column(
                   children: <Widget>[
                     Row(
                       children: <Widget>[
-                        Image.asset(
-                          "assets/images/logo.png",
-                          width: ScreenUtil.getInstance().setWidth(120),
-                          height: ScreenUtil.getInstance().setHeight(120),
+                        Column(
+                          children: [
+                            IconButton(icon: Icon(Icons.arrow_back), 
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              }),
+                            Image.asset(
+                              "assets/images/logo.png",
+                              width: ScreenUtil.getInstance().setWidth(120),
+                              height: ScreenUtil.getInstance().setHeight(120),
+                            )
+                          ]
                         )
                       ],
                     ),
@@ -143,19 +151,6 @@ class _SignupPageState extends State<SignupPage> {
                             SizedBox(
                               height: ScreenUtil.getInstance().setHeight(35),
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: <Widget>[
-                                Text(
-                                  "Forgot Password?",
-                                  style: TextStyle(
-                                      color: Colors.blue,
-                                      fontFamily: "Poppins-Medium",
-                                      fontSize:
-                                          ScreenUtil.getInstance().setSp(28)),
-                                )
-                              ],
-                            )
                           ],
                         ),
                       ),
@@ -237,14 +232,11 @@ class _SignupPageState extends State<SignupPage> {
         ],
       ),
       // floatingActionButton: FloatingActionButton.extended(
-      //     icon: Icon(Icons.broken_image),
-      //     label: Text("Cheat"),
-      //     backgroundColor: Color(0x39B1C3).withOpacity(0.7),
+      //     icon: Icon(Icons.arrow_back),
+      //     label: Text("Go back"),
+      //     backgroundColor: Colors.white70,
       //     onPressed: () {
-      //       Navigator.push(
-      //         context,
-      //         MaterialPageRoute(builder: (context) => MainDrawer()),
-      //       );
+      //       Navigator.of(context).pop();
       //     }),
     );
   }
