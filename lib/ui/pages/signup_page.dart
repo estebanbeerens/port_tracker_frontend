@@ -10,16 +10,17 @@ class SignupPage extends StatefulWidget {
 
 class _SignupPageState extends State<SignupPage> {
   final _formKey = GlobalKey<FormState>();
+  String _firstName;
+  String _lastName;
   String _email;
   String _password;
-  String _verificatiecode;
+  String _verificationCode;
   bool _autoValidate = false;
 
   @override
   Widget build(BuildContext context) {
     ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
-    ScreenUtil.instance =
-        ScreenUtil(width: 750, height: 1125, allowFontScaling: true);
+    ScreenUtil.instance = ScreenUtil(width: 750, height: 1125, allowFontScaling: true);
 
     return new Scaffold(
       backgroundColor: Colors.white,
@@ -50,18 +51,10 @@ class _SignupPageState extends State<SignupPage> {
                   children: <Widget>[
                     Row(
                       children: <Widget>[
-                        Column(
-                          children: [
-                            IconButton(icon: Icon(Icons.arrow_back), 
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              }),
-                            Image.asset(
-                              "assets/images/logo.png",
-                              width: ScreenUtil.getInstance().setWidth(120),
-                              height: ScreenUtil.getInstance().setHeight(120),
-                            )
-                          ]
+                        Image.asset(
+                          "assets/images/logo.png",
+                          width: ScreenUtil.getInstance().setWidth(120),
+                          height: ScreenUtil.getInstance().setHeight(120),
                         )
                       ],
                     ),
@@ -70,7 +63,7 @@ class _SignupPageState extends State<SignupPage> {
                     ),
                     Container(
                       width: double.infinity,
-                      height: ScreenUtil.getInstance().setHeight(500),
+                      // height: ScreenUtil.getInstance().setHeight(500),
                       decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(8.0),
@@ -127,6 +120,7 @@ class _SignupPageState extends State<SignupPage> {
                             TextFormField(
                               //onSaved: (value) => _password = value,
                               obscureText: true,
+                              validator: validatePassword,
                               decoration: InputDecoration(
                                   hintText: "Password",
                                   hintStyle: TextStyle(
@@ -135,7 +129,7 @@ class _SignupPageState extends State<SignupPage> {
                             SizedBox(
                               height: ScreenUtil.getInstance().setHeight(35),
                             ),
-                            Text("Verificatiecode",
+                            Text("First Name",
                                 style: TextStyle(
                                     fontFamily: "Poppins-Medium",
                                     color: Colors.black,
@@ -143,8 +137,43 @@ class _SignupPageState extends State<SignupPage> {
                                         ScreenUtil.getInstance().setSp(26))),
                             TextFormField(
                               //onSaved: (value) => _password = value,
+                              validator: validateFirstName,
                               decoration: InputDecoration(
-                                  hintText: "Verificatiecode",
+                                  hintText: "Jan",
+                                  hintStyle: TextStyle(
+                                      color: Colors.grey, fontSize: 12.0)),
+                            ),
+                            SizedBox(
+                              height: ScreenUtil.getInstance().setHeight(35),
+                            ),
+                            Text("Last Name",
+                                style: TextStyle(
+                                    fontFamily: "Poppins-Medium",
+                                    color: Colors.black,
+                                    fontSize:
+                                        ScreenUtil.getInstance().setSp(26))),
+                            TextFormField(
+                              //onSaved: (value) => _password = value,
+                              validator: validateLastName,
+                              decoration: InputDecoration(
+                                  hintText: "Janssen",
+                                  hintStyle: TextStyle(
+                                      color: Colors.grey, fontSize: 12.0)),
+                            ),
+                            SizedBox(
+                              height: ScreenUtil.getInstance().setHeight(35),
+                            ),
+                            Text("Verification code",
+                                style: TextStyle(
+                                    fontFamily: "Poppins-Medium",
+                                    color: Colors.black,
+                                    fontSize:
+                                        ScreenUtil.getInstance().setSp(26))),
+                            TextFormField(
+                              // onSaved: (value) => _password = value,
+                              validator: validateVerificationCode,
+                              decoration: InputDecoration(
+                                  hintText: "Verification code",
                                   hintStyle: TextStyle(
                                       color: Colors.grey, fontSize: 12.0)),
                             ),
@@ -260,12 +289,52 @@ class _SignupPageState extends State<SignupPage> {
   }
 
   String validateEmail(String value) {
-    Pattern pattern =
-        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+    Pattern pattern = r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
     RegExp regex = new RegExp(pattern);
-    if (!regex.hasMatch(value))
+    if (!regex.hasMatch(value)) {
       return 'Enter Valid Email';
-    else
+    } else {
       return null;
+    }
+  }
+
+  String validatePassword(String value) {
+    Pattern pattern = r'^(?!\s*$).+';
+    RegExp regex = new RegExp(pattern);
+    if (!regex.hasMatch(value)) {
+      return 'Enter A Password';
+    } else {
+      return null;
+    }
+  }
+
+  String validateFirstName(String value) {
+    Pattern pattern = r'^(?!\s*$).+';
+    RegExp regex = new RegExp(pattern);
+    if (!regex.hasMatch(value)) {
+      return 'Enter Valid First Name';
+    } else {
+      return null;
+    }
+  }
+
+  String validateLastName(String value) {
+    Pattern pattern = r'^(?!\s*$).+';
+    RegExp regex = new RegExp(pattern);
+    if (!regex.hasMatch(value)) {
+      return 'Enter Valid Last Name';
+    } else {
+      return null;
+    }
+  }
+
+  String validateVerificationCode(String value) {
+    Pattern pattern = r'^(?!\s*$).+';
+    RegExp regex = new RegExp(pattern);
+    if (!regex.hasMatch(value)) {
+      return 'Enter Valid Verification Code';
+    } else {
+      return null;
+    }
   }
 }

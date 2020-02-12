@@ -151,6 +151,7 @@ class _LoginPageState extends State<LoginPage> {
                             TextFormField(
                               onSaved: (value) => _password = value,
                               obscureText: true,
+                              validator: validatePassword,
                               decoration: InputDecoration(
                                   hintText: "Password",
                                   hintStyle: TextStyle(
@@ -326,5 +327,15 @@ class _LoginPageState extends State<LoginPage> {
       return 'Enter Valid Email';
     else
       return null;
+  }
+
+  String validatePassword(String value) {
+    Pattern pattern = r'^(?!\s*$).+';
+    RegExp regex = new RegExp(pattern);
+    if (!regex.hasMatch(value)) {
+      return 'Enter A Password';
+    } else {
+      return null;
+    }
   }
 }
