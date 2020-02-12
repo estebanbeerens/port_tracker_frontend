@@ -81,8 +81,8 @@ class MapPageState extends State<MapPage> {
           load.name,
           load.firm,
           "assets/images/map_markers/load/cyan.png",
-          load.startLat,
-          load.startLng,
+          double.parse(load.startLat),
+          double.parse(load.startLng),
           true));
       id++;
     }
@@ -92,8 +92,8 @@ class MapPageState extends State<MapPage> {
           device.name,
           device.type,
           "assets/images/map_markers/truck/cyan.png",
-          locations[0].lat,
-          locations[0].lng,
+          double.parse(locations[0].lat),
+          double.parse(locations[0].lng),
           true));
       id++;
     }

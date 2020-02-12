@@ -1,9 +1,9 @@
 class Load {
   String id;
-  double startLat;
-  double startLng;
-  double destLat;
-  double destLng;
+  String startLat;
+  String startLng;
+  String destLat;
+  String destLng;
   bool finished;
   String name;
   String description;

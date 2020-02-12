@@ -12,6 +12,7 @@ final drawerItemsUser = [
   new DrawerItem("Home", Icons.home, true),
   new DrawerItem("Map", Icons.map, true),
   new DrawerItem("QR scanner", Icons.grid_on, true),
+  new DrawerItem("Log out of device", Icons.grid_off, true),
   new DrawerItem("New loads", Icons.settings_input_component, true)
 ];
 

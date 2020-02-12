@@ -1,7 +1,7 @@
 class Location {
   String id;
-  double lat;
-  double lng;
+  String lat;
+  String lng;
   String deviceId;
   String accountId;
   DateTime insertTime;

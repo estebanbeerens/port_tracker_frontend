@@ -22,12 +22,12 @@ class _LoginPageState extends State<LoginPage> {
   String _mail;
   bool _autoValidate = false;
 
-  void _radio() {
-    setState(() {
-      _isSelected = !_isSelected;
-      log(_isSelected.toString());
-    });
-  }
+  // void _radio() {
+  //   setState(() {
+  //     _isSelected = !_isSelected;
+  //     log(_isSelected.toString());
+  //   });
+  // }
 
   Widget radioButton(bool isSelected) => Container(
         width: 16.0,
