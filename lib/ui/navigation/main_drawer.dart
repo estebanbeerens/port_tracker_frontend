@@ -27,7 +27,6 @@ class MainDrawerState extends State<MainDrawer> {
   String imagePath;
   String role;
   List<DrawerItem> drawerList;
-  ListTile logOutOfDeviceTile;
 
   @override
   void initState() {
@@ -45,15 +44,9 @@ class MainDrawerState extends State<MainDrawer> {
     if (loggedInAccount.isModerator == true) {
       imagePath = "assets/images/admin.png";
       drawerList = drawerItemsModerator;
-      logOutOfDeviceTile = ListTile();
     } else {
       imagePath = "assets/images/worker.png";
       drawerList = drawerItemsUser;
-      logOutOfDeviceTile = ListTile(
-          leading: Icon(Icons.grid_off),
-          title: Text("Log out of device",
-              style: TextStyle(fontFamily: 'Montserrat')),
-          enabled: false);
     }
     if (loggedInAccount.roles == null) {
       role = "No role assigned";
@@ -87,6 +80,8 @@ class MainDrawerState extends State<MainDrawer> {
         case 2:
           return new Fragments.Qr();
         case 3:
+          return new Fragments.MachineLogout();
+        case 4:
           return new Fragments.Loads();
 
         default:
@@ -172,7 +167,6 @@ class MainDrawerState extends State<MainDrawer> {
             new Column(children: drawerOptions),
             // new Divider(),
             new Expanded(child: new Align()),
-            logOutOfDeviceTile,
             new ListTile(
               leading: new Icon(Icons.exit_to_app),
               title: new Text("Log out",
