@@ -1,7 +1,12 @@
+import 'dart:convert';
+import 'dart:developer';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:port_tracker/functions/account.dart';
+import 'package:port_tracker/models/account.dart';
 import 'package:port_tracker/ui/navigation/main_drawer.dart';
-import 'package:port_tracker/services/auth_service.dart';
 import 'package:port_tracker/ui/pages/signup_page.dart';
 
 class LoginPage extends StatefulWidget {
@@ -12,14 +17,15 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   bool _isSelected = false;
   final _formKey = GlobalKey<FormState>();
+  final String _url = "http://www.port-tracker.tk:8088/login";
   String _password;
-  String _email;
-  String _verificatiecode;
+  String _mail;
   bool _autoValidate = false;
 
   void _radio() {
     setState(() {
       _isSelected = !_isSelected;
+      log(_isSelected.toString());
     });
   }
 
@@ -129,9 +135,10 @@ class _LoginPageState extends State<LoginPage> {
                                 style: TextStyle(
                                     fontFamily: "Poppins-Medium",
                                     color: Colors.black,
-                                    fontSize: ScreenUtil.getInstance().setSp(26))),
+                                    fontSize:
+                                        ScreenUtil.getInstance().setSp(26))),
                             TextFormField(
-                              //onSaved: (value) => _username = value,
+                              onSaved: (value) => _mail = value,
                               keyboardType: TextInputType.emailAddress,
                               validator: validateEmail,
                               decoration: InputDecoration(
@@ -179,26 +186,29 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     SizedBox(height: ScreenUtil.getInstance().setHeight(40)),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
-                        Row(
-                          children: <Widget>[
-                            SizedBox(
-                              width: 12.0,
-                            ),
-                            GestureDetector(
-                              onTap: _radio,
-                              child: radioButton(_isSelected),
-                            ),
-                            SizedBox(
-                              width: 8.0,
-                            ),
-                            Text("Remember me",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 12, fontFamily: "Poppins-Medium"))
-                          ],
-                        ),
+                        // GestureDetector(
+                        //   onTap: _radio,
+                        //   child: Row(
+                        //     children: <Widget>[
+                        //       SizedBox(
+                        //         width: 12.0,
+                        //       ),
+                        //       GestureDetector(
+                        //         child: radioButton(_isSelected),
+                        //       ),
+                        //       SizedBox(
+                        //         width: 8.0,
+                        //       ),
+                        //       Text("Remember me",
+                        //           style: TextStyle(
+                        //               color: Colors.black,
+                        //               fontSize: 12,
+                        //               fontFamily: "Poppins-Medium"))
+                        //     ],
+                        //   ),
+                        // ),
                         InkWell(
                           child: Container(
                             width: ScreenUtil.getInstance().setWidth(330),
@@ -221,22 +231,8 @@ class _LoginPageState extends State<LoginPage> {
                                 onTap: () {
                                   //check voor login
                                   _validateInputs();
-                                  /*final form = _formKey.currentState;
+                                  final form = _formKey.currentState;
                                   form.save();
-
-                                  if(form.validate()) {
-                                    print(AuthService().loginUser(username: _username, password: _password).toString());
-                                    if (AuthService().loginUser(username: _username, password: _password) != null) {
-                                      Navigator.pushReplacement(
-                                        context, 
-                                        MaterialPageRoute(
-                                          settings: RouteSettings(name: "MainDrawer"),
-                                          builder: (BuildContext context) => MainDrawer()),
-                                      );
-                                    }
-
-                                    print("$_username $_password");
-                                  }*/
                                 },
                                 child: Center(
                                   child: Text("SIGN IN",
@@ -263,15 +259,18 @@ class _LoginPageState extends State<LoginPage> {
                       children: <Widget>[
                         Text(
                           "New User? ",
-                          style: TextStyle(fontFamily: "Poppins-Medium", color: Colors.black),
+                          style: TextStyle(
+                              fontFamily: "Poppins-Medium",
+                              color: Colors.black),
                         ),
                         InkWell(
                           onTap: () {
                             Navigator.push(
-                              context, 
+                              context,
                               MaterialPageRoute(
-                                settings: RouteSettings(name: "SignupPage"),
-                                builder: (BuildContext context) => SignupPage()),
+                                  settings: RouteSettings(name: "SignupPage"),
+                                  builder: (BuildContext context) =>
+                                      SignupPage()),
                             );
                           },
                           child: Text("Sign up",
@@ -279,6 +278,40 @@ class _LoginPageState extends State<LoginPage> {
                                   color: Color(0xFF5d74e3),
                                   fontFamily: "Poppins-Bold")),
                         )
+                      ],
+                    ),
+                    SizedBox(
+                      height: ScreenUtil.getInstance().setHeight(30),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        IconButton(
+                          icon: Icon(Icons.verified_user), 
+                          color: Colors.green, 
+                          onPressed: () async {
+                            Map jsonLoginRequest = {"mail": "nickvbh@gmail.com", "password": "testpass"};
+                            String jsonLoginResponse = await apiRequest(_url, jsonLoginRequest);
+                            loggedInAccount = jsonToAccount(jsonLoginResponse);
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(builder: (context) => MainDrawer(0, null)),
+                            );
+                          }
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.supervised_user_circle), 
+                          color: Colors.red, 
+                          onPressed: () async {
+                            Map jsonLoginRequest = {"mail": "jandenul@gmail.com", "password": "testpass"};
+                            String jsonLoginResponse = await apiRequest(_url, jsonLoginRequest);
+                            loggedInAccount = jsonToAccount(jsonLoginResponse);
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(builder: (context) => MainDrawer(0, null)),
+                            );
+                          }
+                        ),
                       ],
                     )
                   ],
@@ -288,28 +321,31 @@ class _LoginPageState extends State<LoginPage> {
           )
         ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
-          icon: Icon(Icons.broken_image),
-          label: Text("Cheat"),
-          backgroundColor: Color(0x39B1C3).withOpacity(0.7),
-          onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => MainDrawer(0, null)),
-            );
-          }),
     );
   }
-  void _validateInputs() {
+
+  void _validateInputs() async {
     if (_formKey.currentState.validate()) {
       //If all data are correct then save data to out variables
       _formKey.currentState.save();
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-            settings: RouteSettings(name: "MainDrawer"),
-            builder: (BuildContext context) => MainDrawer(0, null)),
-      );
+      Map jsonLoginRequest = toJson();
+      String jsonLoginResponse = await apiRequest(_url, jsonLoginRequest);
+      print(jsonLoginResponse);
+
+      if (!jsonLoginResponse.contains("error")) {
+        if (_isSelected) {
+          log("I got here");
+          storeLoggedInAccount(_mail, _password, jsonLoginResponse);
+        } else {
+          loggedInAccount = jsonToAccount(jsonLoginResponse);
+        }
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              settings: RouteSettings(name: "MainDrawer"),
+              builder: (BuildContext context) => MainDrawer(0, null)),
+        );
+      }
     } else {
       //If all data are not valid then start auto validation.
       setState(() {
@@ -318,7 +354,22 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  //check if string is an email address based on a regexp
+  // Function to create json
+  Map toJson() => {"mail": _mail, "password": _password};
+
+  // Function for HTTP request
+  Future<String> apiRequest(String url, Map jsonMap) async {
+    HttpClient httpClient = new HttpClient();
+    HttpClientRequest request = await httpClient.postUrl(Uri.parse(url));
+    request.headers.set('content-type', 'application/json');
+    request.add(utf8.encode(json.encode(jsonMap)));
+    HttpClientResponse response = await request.close();
+    String reply = await response.transform(utf8.decoder).join();
+    httpClient.close();
+    return reply;
+  }
+
+  // Check if login string is an email address based on a regexp
   String validateEmail(String value) {
     Pattern pattern =
         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
@@ -329,6 +380,7 @@ class _LoginPageState extends State<LoginPage> {
       return null;
   }
 
+  // Check if password string exists
   String validatePassword(String value) {
     Pattern pattern = r'^(?!\s*$).+';
     RegExp regex = new RegExp(pattern);

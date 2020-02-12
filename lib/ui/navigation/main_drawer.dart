@@ -1,10 +1,10 @@
 import 'package:geolocator/geolocator.dart';
+import 'package:port_tracker/functions/account.dart';
 import 'package:port_tracker/ui/navigation/fragments.dart' as Fragments;
 import 'package:flutter/material.dart';
-import 'package:port_tracker/mock/account_mock.dart';
 import 'package:port_tracker/models/drawer_item.dart';
-import 'package:port_tracker/models/account.dart';
 import 'package:port_tracker/ui/pages/login_page.dart';
+import 'package:port_tracker/models/account.dart';
 
 // Our main container
 class MainDrawer extends StatefulWidget {
@@ -24,26 +24,29 @@ class MainDrawerState extends State<MainDrawer> {
   Position _selectedMarkerPosition;
   MainDrawerState(this._selectedDrawerIndex, this._selectedMarkerPosition);
 
-  bool isModerator = true;
   String imagePath;
+  String role;
   List<DrawerItem> drawerList;
-  Account loggedInUser;
   ListTile logOutOfDeviceTile;
 
   @override
   void initState() {
     super.initState();
+    _getLoggedInAccount();
     _checkIfAdmin();
   }
 
+  _getLoggedInAccount() async {
+    String loggedInAccountString = await getLoggedInAccount();
+    loggedInAccount = jsonToAccount(loggedInAccountString);
+  }
+
   _checkIfAdmin() {
-    if (isModerator == true) {
-      loggedInUser = accounts[1];
+    if (loggedInAccount.isModerator == true) {
       imagePath = "assets/images/admin.png";
       drawerList = drawerItemsModerator;
       logOutOfDeviceTile = ListTile();
     } else {
-      loggedInUser = accounts[0];
       imagePath = "assets/images/worker.png";
       drawerList = drawerItemsUser;
       logOutOfDeviceTile = ListTile(
@@ -52,11 +55,16 @@ class MainDrawerState extends State<MainDrawer> {
               style: TextStyle(fontFamily: 'Montserrat')),
           enabled: false);
     }
+    if (loggedInAccount.roles == null) {
+      role = "No role assigned";
+    } else {
+      role = loggedInAccount.roles[0];
+    }
   }
 
   //Let's use a switch statement to return the Fragment for a selected item
   _getDrawerFragment(int pos) {
-    if (isModerator == true) {
+    if (loggedInAccount.isModerator == true) {
       switch (pos) {
         case 0:
           return new Fragments.Home();
@@ -143,10 +151,10 @@ class MainDrawerState extends State<MainDrawer> {
             //Lets Create a material design drawer header with account name, email,avatar
             new UserAccountsDrawerHeader(
               accountName: new Text(
-                  loggedInUser.firstName + " " + loggedInUser.lastName,
+                  loggedInAccount.firstName + " " + loggedInAccount.lastName,
                   style: TextStyle(
                       fontFamily: 'Montserrat', fontWeight: FontWeight.bold)),
-              accountEmail: new Text(loggedInUser.roles[0],
+              accountEmail: new Text(role,
                   style: TextStyle(fontFamily: 'Montserrat')),
               currentAccountPicture: new CircleAvatar(
                 backgroundImage: new AssetImage(imagePath),
@@ -170,6 +178,7 @@ class MainDrawerState extends State<MainDrawer> {
               title: new Text("Log out",
                   style: TextStyle(fontFamily: 'Montserrat')),
               onTap: () {
+                removeLoggedInAccount();
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
