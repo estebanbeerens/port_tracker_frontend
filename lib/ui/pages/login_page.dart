@@ -1,10 +1,10 @@
-import 'dart:convert';
+
 import 'dart:developer';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:port_tracker/functions/account.dart';
+import 'package:port_tracker/functions/http.dart';
 import 'package:port_tracker/models/account.dart';
 import 'package:port_tracker/ui/navigation/main_drawer.dart';
 import 'package:port_tracker/ui/pages/signup_page.dart';
@@ -356,18 +356,6 @@ class _LoginPageState extends State<LoginPage> {
 
   // Function to create json
   Map toJson() => {"mail": _mail, "password": _password};
-
-  // Function for HTTP request
-  Future<String> apiRequest(String url, Map jsonMap) async {
-    HttpClient httpClient = new HttpClient();
-    HttpClientRequest request = await httpClient.postUrl(Uri.parse(url));
-    request.headers.set('content-type', 'application/json');
-    request.add(utf8.encode(json.encode(jsonMap)));
-    HttpClientResponse response = await request.close();
-    String reply = await response.transform(utf8.decoder).join();
-    httpClient.close();
-    return reply;
-  }
 
   // Check if login string is an email address based on a regexp
   String validateEmail(String value) {

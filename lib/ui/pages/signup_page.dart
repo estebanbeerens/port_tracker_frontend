@@ -178,7 +178,7 @@ class _SignupPageState extends State<SignupPage> {
                                       color: Colors.grey, fontSize: 12.0)),
                             ),
                             SizedBox(
-                              height: ScreenUtil.getInstance().setHeight(35),
+                              height: ScreenUtil.getInstance().setHeight(50),
                             ),
                           ],
                         ),
