@@ -32,13 +32,7 @@ class MainDrawerState extends State<MainDrawer> {
   @override
   void initState() {
     super.initState();
-    _getLoggedInAccount();
     _checkIfAdmin();
-  }
-
-  _getLoggedInAccount() async {
-    String loggedInAccountString = await getLoggedInAccount();
-    loggedInAccount = jsonToAccount(loggedInAccountString);
   }
 
   _checkIfAdmin() {
@@ -178,7 +172,6 @@ class MainDrawerState extends State<MainDrawer> {
               title: new Text("Log out",
                   style: TextStyle(fontFamily: 'Montserrat')),
               onTap: () {
-                removeLoggedInAccount();
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(

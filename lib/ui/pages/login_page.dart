@@ -333,12 +333,7 @@ class _LoginPageState extends State<LoginPage> {
       print(jsonLoginResponse);
 
       if (!jsonLoginResponse.contains("error")) {
-        if (_isSelected) {
-          log("I got here");
-          storeLoggedInAccount(_mail, _password, jsonLoginResponse);
-        } else {
-          loggedInAccount = jsonToAccount(jsonLoginResponse);
-        }
+        loggedInAccount = jsonToAccount(jsonLoginResponse);
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
