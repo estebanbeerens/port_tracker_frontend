@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:barcode_scan/barcode_scan.dart';
-import 'package:port_tracker/functions/device.dart';
-import 'package:port_tracker/models/device.dart';
 
 class QrPage extends StatefulWidget{
   _QrPageState createState()=> _QrPageState();
@@ -15,9 +13,8 @@ class _QrPageState extends State<QrPage> {
   Future _scanQR() async {
     try {
       String qrResult = await BarcodeScanner.scan();
-      setState(() {
+      setState(() async {
         result = qrResult;
-        scannedQR = qrResult;
       });
     }
     on PlatformException
@@ -28,17 +25,17 @@ class _QrPageState extends State<QrPage> {
         });
       } else {
         setState(() {
-          scannedQR = "Unknown Error $ex";
+          result = "Unknown Error $ex";
         });
       }
     }
     on FormatException {
       setState(() {
-        scannedQR = "You pressed the back button before scanning anything";
+        result = "You pressed the back button before scanning anything";
       });
     } catch (ex) {
       setState(() {
-        scannedQR = "Unknown Error $ex";
+        result = "Unknown Error $ex";
       });
     }
   }

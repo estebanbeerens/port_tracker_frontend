@@ -1,10 +1,14 @@
+import 'package:barcode_scan/barcode_scan.dart';
+import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:port_tracker/functions/account.dart';
+import 'package:port_tracker/functions/json_helper.dart';
+import 'package:port_tracker/globals.dart';
+import 'package:port_tracker/models/device.dart';
+import 'package:port_tracker/models/load.dart';
 import 'package:port_tracker/ui/navigation/fragments.dart' as Fragments;
 import 'package:flutter/material.dart';
 import 'package:port_tracker/models/drawer_item.dart';
 import 'package:port_tracker/ui/pages/login_page.dart';
-import 'package:port_tracker/models/account.dart';
 
 // Our main container
 class MainDrawer extends StatefulWidget {
@@ -28,6 +32,7 @@ class MainDrawerState extends State<MainDrawer> {
   String role;
   List<DrawerItem> drawerList;
   ListTile logOutOfDeviceTile;
+  ListTile qrScannerTile;
 
   @override
   void initState() {
@@ -35,19 +40,64 @@ class MainDrawerState extends State<MainDrawer> {
     _checkIfAdmin();
   }
 
+  Future<void> scanQR() async {
+    try {
+      String scannedQR = await BarcodeScanner.scan();
+      String deviceJson = await getDeviceJson("http://www.port-tracker.tk:8000/api/devices/" + scannedQR);
+      setState(() {
+        scanResult = "QR-code scan succesful";
+        currentDevice = jsonToDevice(deviceJson);
+      });
+      for (Load load in currentDevice.loads) {
+        print(load.toString());
+        setState(() {
+          currentLoads.add(jsonToLoad(load.toString()));
+        });
+      }
+    }
+    on PlatformException catch (ex) {
+      if (ex.code == BarcodeScanner.CameraAccessDenied) {
+        scanResult = "Camera permission was denied";
+      } else {
+        scanResult = "Unknown Error $ex";
+      }
+    }
+    on FormatException {
+      scanResult = "You pressed the back button before scanning anything";
+    } catch (ex) {
+      scanResult = "Unknown Error $ex";
+    }
+  }
+
   _checkIfAdmin() {
     if (loggedInAccount.isModerator == true) {
       imagePath = "assets/images/admin.png";
       drawerList = drawerItemsModerator;
       logOutOfDeviceTile = ListTile();
+      qrScannerTile = ListTile();
     } else {
       imagePath = "assets/images/worker.png";
       drawerList = drawerItemsUser;
+      qrScannerTile = ListTile(
+        leading: new Icon(Icons.grid_on),
+        title: new Text("QR scanner", style: TextStyle(fontFamily: 'Montserrat')),
+        enabled: true,
+        onTap: () {
+          Navigator.of(context).pop();
+          scanQR();
+        },
+      );
       logOutOfDeviceTile = ListTile(
-          leading: Icon(Icons.grid_off),
-          title: Text("Log out of device",
-              style: TextStyle(fontFamily: 'Montserrat')),
-          enabled: false);
+        leading: Icon(Icons.grid_off),
+        title: Text("Log out of device", style: TextStyle(fontFamily: 'Montserrat')),
+        enabled: true,
+        onTap: () {
+          Navigator.of(context).pop();
+          setState(() {
+            currentDevice = null;
+          });
+        },
+      );
     }
     if (loggedInAccount.roles == null) {
       role = "No role assigned";
@@ -79,8 +129,6 @@ class MainDrawerState extends State<MainDrawer> {
         case 1:
           return new Fragments.Map(_selectedMarkerPosition);
         case 2:
-          return new Fragments.Qr();
-        case 3:
           return new Fragments.Loads();
 
         default:
@@ -148,8 +196,8 @@ class MainDrawerState extends State<MainDrawer> {
                   loggedInAccount.firstName + " " + loggedInAccount.lastName,
                   style: TextStyle(
                       fontFamily: 'Montserrat', fontWeight: FontWeight.bold)),
-              accountEmail: new Text(role,
-                  style: TextStyle(fontFamily: 'Montserrat')),
+              accountEmail:
+                  new Text(role, style: TextStyle(fontFamily: 'Montserrat')),
               currentAccountPicture: new CircleAvatar(
                 backgroundImage: new AssetImage(imagePath),
               ),
@@ -164,7 +212,7 @@ class MainDrawerState extends State<MainDrawer> {
               ),
             ),
             new Column(children: drawerOptions),
-            // new Divider(),
+            qrScannerTile,
             new Expanded(child: new Align()),
             logOutOfDeviceTile,
             new ListTile(

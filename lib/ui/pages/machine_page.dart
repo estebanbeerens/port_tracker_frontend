@@ -20,7 +20,7 @@ class _MachinePageState extends State<MachinePage> {
           ),
         ),
         new ListView(
-          children: createAllDeviceCards(),
+          // children: createAllDeviceCards(),
         )
       ],
     ));

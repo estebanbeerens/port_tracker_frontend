@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:loading/indicator/ball_pulse_indicator.dart';
 import 'package:loading/loading.dart';
+import 'package:port_tracker/functions/get_location.dart';
 
 class Distance extends StatefulWidget {
   final Position devicePosition;
@@ -25,14 +26,8 @@ class _DistanceState extends State<Distance> {
   }
   
   Future<void> _initialize() async {
-    _currentPosition = await _getLocation();
+    _currentPosition = await getLocation();
     _getDistance(devicePosition, _currentPosition);
-  }
-
-  Future<Position> _getLocation() async {
-    final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
-    return await geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.best);
   }
 
   void _getDistance(Position position, Position currentPosition) {

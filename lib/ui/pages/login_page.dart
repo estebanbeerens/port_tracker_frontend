@@ -1,10 +1,8 @@
 
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:port_tracker/functions/account.dart';
-import 'package:port_tracker/functions/http.dart';
+import 'package:port_tracker/globals.dart';
+import 'package:port_tracker/functions/json_helper.dart';
 import 'package:port_tracker/models/account.dart';
 import 'package:port_tracker/ui/navigation/main_drawer.dart';
 import 'package:port_tracker/ui/pages/signup_page.dart';
@@ -15,7 +13,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  bool _isSelected = false;
+  // bool _isSelected = false;
   final _formKey = GlobalKey<FormState>();
   final String _url = "http://www.port-tracker.tk:8088/login";
   String _password;
@@ -291,7 +289,7 @@ class _LoginPageState extends State<LoginPage> {
                           color: Colors.green, 
                           onPressed: () async {
                             Map jsonLoginRequest = {"mail": "nickvbh@gmail.com", "password": "testpass"};
-                            String jsonLoginResponse = await apiRequest(_url, jsonLoginRequest);
+                            String jsonLoginResponse = await requestLogin(_url, jsonLoginRequest);
                             loggedInAccount = jsonToAccount(jsonLoginResponse);
                             Navigator.pushReplacement(
                               context,
@@ -304,7 +302,7 @@ class _LoginPageState extends State<LoginPage> {
                           color: Colors.red, 
                           onPressed: () async {
                             Map jsonLoginRequest = {"mail": "jandenul@gmail.com", "password": "testpass"};
-                            String jsonLoginResponse = await apiRequest(_url, jsonLoginRequest);
+                            String jsonLoginResponse = await requestLogin(_url, jsonLoginRequest);
                             loggedInAccount = jsonToAccount(jsonLoginResponse);
                             Navigator.pushReplacement(
                               context,
@@ -329,7 +327,7 @@ class _LoginPageState extends State<LoginPage> {
       //If all data are correct then save data to out variables
       _formKey.currentState.save();
       Map jsonLoginRequest = toJson();
-      String jsonLoginResponse = await apiRequest(_url, jsonLoginRequest);
+      String jsonLoginResponse = await requestLogin(_url, jsonLoginRequest);
       print(jsonLoginResponse);
 
       if (!jsonLoginResponse.contains("error")) {

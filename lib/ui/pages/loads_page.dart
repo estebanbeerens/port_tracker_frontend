@@ -20,9 +20,7 @@ class _LoadsPageState extends State<LoadsPage> {
                 fit: BoxFit.cover),
           ),
         ),
-        new ListView(
-          children: createAllLoadCards(),
-        )
+        new ListView(children: createCurrentLoadsCards())
       ],
     ));
   }
