@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:port_tracker/functions/card_creator.dart';
 
 class MachinePage extends StatefulWidget {
   @override

@@ -5,6 +5,7 @@ import 'package:port_tracker/functions/json_helper.dart';
 import 'package:port_tracker/globals.dart';
 import 'package:port_tracker/models/device.dart';
 import 'package:port_tracker/models/load.dart';
+import 'package:port_tracker/ui/components/toast.dart';
 import 'package:port_tracker/ui/navigation/fragments.dart' as Fragments;
 import 'package:flutter/material.dart';
 import 'package:port_tracker/models/drawer_item.dart';
@@ -57,15 +58,24 @@ class MainDrawerState extends State<MainDrawer> {
     }
     on PlatformException catch (ex) {
       if (ex.code == BarcodeScanner.CameraAccessDenied) {
-        scanResult = "Camera permission was denied";
+        setState(() {
+          scanResult = "Camera permission was denied";
+        });
       } else {
-        scanResult = "Unknown Error $ex";
+        setState(() {
+          scanResult = "Unknown Error $ex";
+        });
       }
     }
     on FormatException {
-      scanResult = "You pressed the back button before scanning anything";
-    } catch (ex) {
-      scanResult = "Unknown Error $ex";
+      setState(() {
+        scanResult = "You pressed the back button before scanning anything";
+      });
+    } 
+    catch (ex) {
+      setState(() {
+        scanResult = "Unknown Error $ex";
+      });
     }
   }
 
@@ -82,9 +92,9 @@ class MainDrawerState extends State<MainDrawer> {
         leading: new Icon(Icons.grid_on),
         title: new Text("QR scanner", style: TextStyle(fontFamily: 'Montserrat')),
         enabled: true,
-        onTap: () {
+        onTap: () async {
           Navigator.of(context).pop();
-          scanQR();
+          await scanQR();
         },
       );
       logOutOfDeviceTile = ListTile(
@@ -93,9 +103,14 @@ class MainDrawerState extends State<MainDrawer> {
         enabled: true,
         onTap: () {
           Navigator.of(context).pop();
-          setState(() {
-            currentDevice = null;
-          });
+          if (currentDevice != null) {
+            setState(() {
+              currentDevice = null;
+            });
+            createToast("Logged out of device");
+          } else {
+            createToast("You aren't logged in to a device");
+          }
         },
       );
     }
@@ -161,7 +176,7 @@ class MainDrawerState extends State<MainDrawer> {
         onTap: () => _onSelectItem(i),
       ));
     }
-    //Let's scaffold our homepage
+    //Let's scaffold our page
     return new Scaffold(
       appBar: new AppBar(
         centerTitle: true,
