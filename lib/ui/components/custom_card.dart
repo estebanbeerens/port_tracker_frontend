@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:port_tracker/functions/get_distance.dart';
@@ -7,16 +5,110 @@ import 'package:port_tracker/ui/navigation/main_drawer.dart';
 import 'package:port_tracker/ui/styles/text_style.dart';
 
 // CustomCard is the card widget that we generally use
-class CustomCard extends StatelessWidget {
+class CustomCard extends StatefulWidget {
+  final loadDevice;
   final String name;
   final String deviceOrFirm;
   final Position position;
   final bool isLoad;
+  CustomCard(this.loadDevice, this.name, this.deviceOrFirm, this.isLoad,
+      this.position);
+
+  @override
+  _CustomCardState createState() => _CustomCardState(this.loadDevice, this.name,
+      this.deviceOrFirm, this.isLoad, this.position);
+}
+
+class _CustomCardState extends State<CustomCard> {
+  bool monVal = false;
+
+  final loadDevice;
+  final String name;
+  final String deviceOrFirm;
+  final Position position;
+  final bool isLoad;
+  _CustomCardState(this.loadDevice, this.name, this.deviceOrFirm, this.isLoad,
+      this.position);
+
+  Widget checkLoadOrDevice() {
+    if (isLoad) {
+      return new Column(children: <Widget>[
+        new Row(children: <Widget>[
+          new Expanded(
+            child: new Row(mainAxisSize: MainAxisSize.min, children: [
+              // Distance from current location, can be changed
+              new Icon(
+                Icons.location_searching,
+                color: Colors.black,
+              ),
+              new Container(width: 8.0),
+              new Distance(widget.position)
+            ]),
+          ),
+          new Expanded(
+              child: new MaterialButton(
+                  child: new Row(
+                    children: <Widget>[
+                      Icon(Icons.location_on),
+                      new Container(width: 4.0),
+                      Text("Map")
+                    ],
+                  ),
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          settings: RouteSettings(name: "MapPage"),
+                          builder: (BuildContext context) =>
+                              MainDrawer(1, widget.position)),
+                    );
+                  }))
+        ]),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Text("Mark as done:"),
+            new Container(width: 20.0),
+            Checkbox(
+              value: monVal,
+              activeColor: Colors.green,
+              onChanged: (bool value) {
+                setState(() {
+                  monVal = value;
+                });
+              },
+            ),
+          ],
+        ),
+      ]);
+    } else {
+      return new Row(children: <Widget>[
+        new Expanded(
+            child: new MaterialButton(
+                child: new Row(
+                  children: <Widget>[
+                    Icon(Icons.my_location),
+                    new Container(width: 8.0),
+                    Text("Go to your location")
+                  ],
+                ),
+                onPressed: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        settings: RouteSettings(name: "MapPage"),
+                        builder: (BuildContext context) =>
+                            MainDrawer(1, null)),
+                  );
+                }))
+      ]);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     Icon thumbnail;
-    if (isLoad == true) {
+    if (widget.isLoad == true) {
       thumbnail = Icon(Icons.dashboard,
           size: 80.0, color: Color(0x333333).withOpacity(1));
     } else {
@@ -27,8 +119,8 @@ class CustomCard extends StatelessWidget {
         margin: EdgeInsets.symmetric(vertical: 16.0, horizontal: 24.0),
         child: new Stack(
           children: <Widget>[
+            // The card with text on it several things can be displayed here
             new Container(
-              // The card with text on it several things can be displayed here
               child: new Container(
                 margin: new EdgeInsets.only(
                     left: 76.0, right: 16.0, top: 16.0, bottom: 16.0),
@@ -37,52 +129,17 @@ class CustomCard extends StatelessWidget {
                   children: <Widget>[
                     new Container(height: 4.0),
                     // Title
-                    new Text(name, style: Style.titleTextStyle),
+                    new Text(widget.name, style: Style.titleTextStyle),
                     new Container(height: 10.0),
                     // Description / Company
-                    new Text(deviceOrFirm, style: Style.commonTextStyle),
+                    new Text(widget.deviceOrFirm, style: Style.commonTextStyle),
                     // The divider
                     new Container(
                         margin: new EdgeInsets.symmetric(vertical: 8.0),
                         height: 2.0,
                         width: 36.0,
                         color: Color(0xF03B8E).withOpacity(1.0)),
-                    new Row(
-                      children: <Widget>[
-                        new Expanded(
-                          child: new Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                // Distance from current location, can be changed
-                                new Icon(
-                                  Icons.location_searching,
-                                  color: Colors.black,
-                                ),
-                                new Container(width: 8.0),
-                                // new Text("500 m"),
-                                new Distance(position)
-                              ]),
-                        ),
-                        new Expanded(
-                            child: new MaterialButton(
-                          child: new Row(
-                            children: <Widget>[
-                              Icon(Icons.location_on),
-                              Text("Map")
-                            ],
-                          ),
-                          onPressed: () {
-                            log("Go to location of " + name);
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  settings: RouteSettings(name: "MapPage"),
-                                  builder: (BuildContext context) => MainDrawer(1, position)),
-                            );
-                          },
-                        ))
-                      ],
-                    ),
+                    checkLoadOrDevice()
                   ],
                 ),
               ),
@@ -100,7 +157,6 @@ class CustomCard extends StatelessWidget {
                 ],
               ),
             ),
-
             // The thumbnail for the card, AKA the icon in the circle on the left of the card
             new Container(
                 margin: new EdgeInsets.symmetric(vertical: 16.0),
@@ -119,6 +175,4 @@ class CustomCard extends StatelessWidget {
           ],
         ));
   }
-
-  CustomCard(this.name, this.deviceOrFirm, this.isLoad, this.position);
 }

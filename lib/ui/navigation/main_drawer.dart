@@ -41,6 +41,14 @@ class MainDrawerState extends State<MainDrawer> {
     _checkIfAdmin();
   }
 
+  
+  void logOutOfDevice() {
+    setState(() {
+      currentDevice = null;
+      selectedLoad = null;
+    });
+  }
+
   Future<void> scanQR() async {
     try {
       String scannedQR = await BarcodeScanner.scan();
@@ -104,9 +112,7 @@ class MainDrawerState extends State<MainDrawer> {
         onTap: () {
           Navigator.of(context).pop();
           if (currentDevice != null) {
-            setState(() {
-              currentDevice = null;
-            });
+            logOutOfDevice();
             createToast("Logged out of device");
           } else {
             createToast("You aren't logged in to a device");

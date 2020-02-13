@@ -19,9 +19,7 @@ class _HomePageState extends State<HomePage> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text("No QR Code scanned", style: TextStyle(fontSize: 20.0, fontFamily: "Montserrat")),
-          SizedBox(
-            height: ScreenUtil.getInstance().setHeight(30),
-          ),
+          SizedBox(height: ScreenUtil.getInstance().setHeight(30)),
           MaterialButton(child: Text("Open navigation", style: TextStyle(fontSize: 14.0, fontFamily: "Montserrat"),), color: Color(0x39B1C3).withOpacity(0.6), onPressed: () { Scaffold.of(context).openDrawer(); })
         ]
       ));

@@ -8,8 +8,8 @@ import 'package:port_tracker/ui/components/custom_card.dart';
 List<Widget> createCurrentDeviceCard() {
   List<CustomCard> customCards = List<CustomCard>();
   // if (currentDevice != null) {
-    customCards.add(CustomCard(currentDevice.name, currentDevice.type, false,
-        Position(longitude: double.parse(locations[0].lng), latitude: double.parse(locations[0].lat))));
+    customCards.add(CustomCard(currentDevice, currentDevice.name, currentDevice.type, false,
+        Position(latitude: double.parse(locations[0].lat), longitude: double.parse(locations[0].lng))));
   // }
   return customCards;
 }
@@ -18,8 +18,16 @@ List<Widget> createCurrentLoadsCards() {
   List<CustomCard> customCards = List<CustomCard>();
   // if (currentDevice != null) {
     for (Load load in currentDevice.loads) {
-      customCards.add(CustomCard(load.name, load.firm, true,
-          Position(longitude: double.parse(load.startLng), latitude: double.parse(load.startLat))));
+      double lat; double lng;
+      if (load.finished == true) {
+        lat = double.parse(load.destLat);
+        lng = double.parse(load.destLng);
+      } else {
+        lat = double.parse(load.startLat);
+        lng = double.parse(load.startLng);
+      }
+      customCards.add(CustomCard(load, load.name, load.firm, true,
+          Position(latitude: lat, longitude: lng)));
       print(load);
     }
   // }
