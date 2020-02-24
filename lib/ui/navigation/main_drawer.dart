@@ -58,7 +58,6 @@ class MainDrawerState extends State<MainDrawer> {
         currentDevice = jsonToDevice(deviceJson);
       });
       for (Load load in currentDevice.loads) {
-        print(load.toString());
         setState(() {
           currentLoads.add(jsonToLoad(load.toString()));
         });

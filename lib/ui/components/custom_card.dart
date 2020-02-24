@@ -11,24 +11,24 @@ class CustomCard extends StatefulWidget {
   final String deviceOrFirm;
   final Position position;
   final bool isLoad;
+  final bool finished;
   CustomCard(this.loadDevice, this.name, this.deviceOrFirm, this.isLoad,
-      this.position);
+      this.position, this.finished);
 
   @override
   _CustomCardState createState() => _CustomCardState(this.loadDevice, this.name,
-      this.deviceOrFirm, this.isLoad, this.position);
+      this.deviceOrFirm, this.isLoad, this.position, this.finished);
 }
 
 class _CustomCardState extends State<CustomCard> {
-  bool monVal = false;
-
   final loadDevice;
   final String name;
   final String deviceOrFirm;
   final Position position;
   final bool isLoad;
+  final bool finished;
   _CustomCardState(this.loadDevice, this.name, this.deviceOrFirm, this.isLoad,
-      this.position);
+      this.position, this.finished);
 
   Widget checkLoadOrDevice() {
     if (isLoad) {
@@ -70,11 +70,11 @@ class _CustomCardState extends State<CustomCard> {
             Text("Mark as done:"),
             new Container(width: 20.0),
             Checkbox(
-              value: monVal,
+              value: widget.finished,
               activeColor: Colors.green,
               onChanged: (bool value) {
                 setState(() {
-                  monVal = value;
+                  // TODO implement finished
                 });
               },
             ),

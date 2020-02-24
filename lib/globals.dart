@@ -8,4 +8,8 @@ Account loggedInAccount;
 // QR Scanner
 String scanResult;
 Device currentDevice;
-List<Load> currentLoads;
+List<Load> currentLoads = List<Load>();
+
+// Map
+List<Load> allLoads  = List<Load>();
+Load selectedLoad;

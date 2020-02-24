@@ -9,7 +9,7 @@ List<Widget> createCurrentDeviceCard() {
   List<CustomCard> customCards = List<CustomCard>();
   // if (currentDevice != null) {
     customCards.add(CustomCard(currentDevice, currentDevice.name, currentDevice.type, false,
-        Position(latitude: double.parse(locations[0].lat), longitude: double.parse(locations[0].lng))));
+        Position(latitude: double.parse(locations[0].lat), longitude: double.parse(locations[0].lng)), null));
   // }
   return customCards;
 }
@@ -27,7 +27,7 @@ List<Widget> createCurrentLoadsCards() {
         lng = double.parse(load.startLng);
       }
       customCards.add(CustomCard(load, load.name, load.firm, true,
-          Position(latitude: lat, longitude: lng)));
+          Position(latitude: lat, longitude: lng), load.finished));
       print(load);
     }
   // }

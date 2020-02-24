@@ -8,8 +8,6 @@ import 'package:loading/indicator/ball_grid_pulse_indicator.dart';
 import 'package:loading/loading.dart';
 import 'package:port_tracker/globals.dart';
 import 'package:port_tracker/models/load.dart';
-import 'package:port_tracker/models/marker_item.dart';
-import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:port_tracker/ui/components/floating_panel.dart';
 
@@ -28,9 +26,7 @@ class MapPageState extends State<MapPage> {
   MapPageState(this._selectedMarkerPosition);
 
   Position _startPosition;
-  MarkerItem _selectedMarker;
-
-  List<Marker> allMarkers = [];
+  // List<Marker> allMarkers = [];
 
   PanelController floatingPanelMap = new PanelController();
 
@@ -39,15 +35,12 @@ class MapPageState extends State<MapPage> {
   void initState() {
     super.initState();
     _createInitialPosition();
-    if (currentDevice != null) {
-      _createMarkers();
-    }
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   super.dispose();
+  // }
 
   void _createInitialPosition() async {
     log(_selectedMarkerPosition.toString());
@@ -73,52 +66,43 @@ class MapPageState extends State<MapPage> {
     });
   }
 
-  List<MarkerItem> createAllMarkerItems() {
-    var id = 0;
-    List<MarkerItem> markerItems = [];
-    for (Load load in currentDevice.loads) {
-      markerItems.add(new MarkerItem(
-          id,
-          load.name,
-          load.firm,
-          "assets/images/map_markers/load/cyan.png",
-          double.parse(load.startLat),
-          double.parse(load.startLng),
-          true));
-      id++;
-    }
-    return markerItems;
-  }
-
   // Creates all the markers
-  void _createMarkers() {
-    List<MarkerItem> markerItems = createAllMarkerItems();
-    for (var item in markerItems) {
-      // BitmapDescriptor.fromAssetImage(ImageConfiguration(devicePixelRatio: 2.5), item.icon).then((onValue) {
-      //   setState(() {
-      //     pinLocationIcon = onValue;
-      //   });
-      // });
-      allMarkers.add(Marker(
-          markerId: MarkerId(item.id.toString()),
-          icon: BitmapDescriptor.fromAsset(item.icon),
-          // icon: pinLocationIcon,
-          draggable: true,
-          position: LatLng(item.lat, item.lng),
-          onTap: () {
-            _selectedMarker = markerItems[item.id];
-            log("Pressed marker " +
-                _selectedMarker.id.toString() +
-                ": " +
-                _selectedMarker.title.toString());
-          },
-          infoWindow: InfoWindow(
-              title: item.title,
-              snippet: "Click for info",
-              onTap: () {
-                floatingPanelMap.open();
-              })));
+  List<Marker> _createMarkers() {
+    List<Marker> allMarkers = [];
+    if (currentDevice != null) {
+      for (Load load in currentDevice.loads) {
+        allLoads.add(load);
+        String imagePath;
+        double lat;
+        double lng;
+        if (load.finished == true) {
+          imagePath = "assets/images/map_markers/load/green.png";
+          lat = double.parse(load.destLat);
+          lng = double.parse(load.destLng);
+        } else {
+          imagePath = "assets/images/map_markers/load/cyan.png";
+          lat = double.parse(load.startLat);
+          lng = double.parse(load.startLng);
+        }
+        
+        allMarkers.add(Marker(
+            markerId: MarkerId(load.id),
+            icon: BitmapDescriptor.fromAsset(imagePath),
+            position: LatLng(lat, lng),
+            onTap: () {
+              setState(() {
+                selectedLoad = getLoadById(allLoads, load.id);
+              });
+            },
+            infoWindow: InfoWindow(
+                title: load.name,
+                snippet: "Click for info",
+                onTap: () {
+                  floatingPanelMap.open();
+                })));
+      }
     }
+    return allMarkers;
   }
 
   // The floating panel when it's collapsed
@@ -160,26 +144,25 @@ class MapPageState extends State<MapPage> {
       return Scaffold(
         body: new SlidingUpPanel(
           renderPanelSheet: false,
-          panel: ChangeNotifierProvider(
-            create: (_) => new ChangeNotifier(),
-            child: FloatingPanel()),
+          panel: FloatingPanel(),
           collapsed: _floatingCollapsed(),
           body: Center(
             child: GoogleMap(
-                // Settings for the map
-                compassEnabled: true,
-                myLocationButtonEnabled: true,
-                myLocationEnabled: true,
-                buildingsEnabled: true,
-                // Set starting position on your current location
-                initialCameraPosition: CameraPosition(
-                  target: LatLng(
-                      _startPosition.latitude, _startPosition.longitude),
-                  zoom: 18.0,
-                ),
-                onMapCreated: (GoogleMapController controller) {},
-                // Set the markers on the map
-                markers: Set.from(allMarkers)),
+              // Settings for the map
+              compassEnabled: true,
+              myLocationButtonEnabled: true,
+              myLocationEnabled: true,
+              buildingsEnabled: true,
+              // Set starting position on your current location
+              initialCameraPosition: CameraPosition(
+                target:
+                    LatLng(_startPosition.latitude, _startPosition.longitude),
+                zoom: 18.0,
+              ),
+              onMapCreated: (GoogleMapController controller) {},
+              // Set the markers on the map
+              markers: Set.from(_createMarkers()),
+            ),
           ),
           controller: floatingPanelMap,
           // Settings for backdrop when the sliding panel is opened

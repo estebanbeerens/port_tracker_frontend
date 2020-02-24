@@ -14,6 +14,7 @@ class MyApp extends StatelessWidget {
       DeviceOrientation.portraitUp,
     ]);
     return new MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Port Tracker',
       theme: new ThemeData(
         primarySwatch: Colors.cyan,
