@@ -8,8 +8,7 @@ import 'package:loading/indicator/ball_grid_pulse_indicator.dart';
 import 'package:loading/loading.dart';
 import 'package:port_tracker/globals.dart';
 import 'package:port_tracker/models/load.dart';
-import 'package:sliding_up_panel/sliding_up_panel.dart';
-import 'package:port_tracker/ui/components/floating_panel.dart';
+import 'package:port_tracker/ui/navigation/main_drawer.dart';
 
 // Class for the markers
 
@@ -26,21 +25,13 @@ class MapPageState extends State<MapPage> {
   MapPageState(this._selectedMarkerPosition);
 
   Position _startPosition;
-  // List<Marker> allMarkers = [];
-
-  PanelController floatingPanelMap = new PanelController();
-
+  
   // Call _getLocation() and _createMarkers() when loading the page
   @override
   void initState() {
     super.initState();
     _createInitialPosition();
   }
-
-  // @override
-  // void dispose() {
-  //   super.dispose();
-  // }
 
   void _createInitialPosition() async {
     log(_selectedMarkerPosition.toString());
@@ -71,7 +62,6 @@ class MapPageState extends State<MapPage> {
     List<Marker> allMarkers = [];
     if (currentDevice != null) {
       for (Load load in currentDevice.loads) {
-        allLoads.add(load);
         String imagePath;
         double lat;
         double lng;
@@ -84,44 +74,26 @@ class MapPageState extends State<MapPage> {
           lat = double.parse(load.startLat);
           lng = double.parse(load.startLng);
         }
-        
-        allMarkers.add(Marker(
+        allMarkers.add(
+          Marker(
             markerId: MarkerId(load.id),
             icon: BitmapDescriptor.fromAsset(imagePath),
             position: LatLng(lat, lng),
-            onTap: () {
-              setState(() {
-                selectedLoad = getLoadById(allLoads, load.id);
-              });
-            },
             infoWindow: InfoWindow(
                 title: load.name,
-                snippet: "Click for info",
+                snippet: load.description,
                 onTap: () {
-                  floatingPanelMap.open();
-                })));
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        settings: RouteSettings(name: "LoadsPage"),
+                        builder: (BuildContext context) =>
+                            MainDrawer(2, null)),
+                  );
+                })));                
       }
     }
     return allMarkers;
-  }
-
-  // The floating panel when it's collapsed
-  Widget _floatingCollapsed() {
-    return new GestureDetector(
-        onTap: () {
-          floatingPanelMap.open();
-        },
-        child: new Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(24.0),
-                topRight: Radius.circular(24.0)),
-          ),
-          margin: const EdgeInsets.fromLTRB(24.0, 24.0, 24.0, 0.0),
-          child: Center(
-            child: Icon(Icons.drag_handle),
-          ),
-        ));
   }
 
   @override
@@ -142,34 +114,22 @@ class MapPageState extends State<MapPage> {
     } else {
       // The map screen
       return Scaffold(
-        body: new SlidingUpPanel(
-          renderPanelSheet: false,
-          panel: FloatingPanel(),
-          collapsed: _floatingCollapsed(),
-          body: Center(
-            child: GoogleMap(
-              // Settings for the map
-              compassEnabled: true,
-              myLocationButtonEnabled: true,
-              myLocationEnabled: true,
-              buildingsEnabled: true,
-              // Set starting position on your current location
-              initialCameraPosition: CameraPosition(
-                target:
-                    LatLng(_startPosition.latitude, _startPosition.longitude),
-                zoom: 18.0,
-              ),
-              onMapCreated: (GoogleMapController controller) {},
-              // Set the markers on the map
-              markers: Set.from(_createMarkers()),
+        body: Center(
+          child: GoogleMap(
+            // Settings for the map
+            compassEnabled: true,
+            myLocationButtonEnabled: true,
+            myLocationEnabled: true,
+            buildingsEnabled: true,
+            // Set starting position on your current location
+            initialCameraPosition: CameraPosition(
+              target: LatLng(_startPosition.latitude, _startPosition.longitude),
+              zoom: 18.0,
             ),
+            onMapCreated: (GoogleMapController controller) {},
+            // Set the markers on the map
+            markers: Set.from(_createMarkers()),
           ),
-          controller: floatingPanelMap,
-          // Settings for backdrop when the sliding panel is opened
-          backdropEnabled: true,
-          backdropOpacity: 0.2,
-          // Hiehgt of sliding panel when closed
-          minHeight: 100,
         ),
       );
     }

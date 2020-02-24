@@ -33,11 +33,3 @@ Load jsonToLoad(String jsonString) {
   print(loadMap);
   return Load.fromJson(loadMap);
 }
-
-Load getLoadById(List<Load> loads, String id) {
-  for (Load load in loads) {
-    if (load.id == id) {
-      return load;
-    }
-  }
-}

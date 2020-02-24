@@ -9,7 +9,3 @@ Account loggedInAccount;
 String scanResult;
 Device currentDevice;
 List<Load> currentLoads = List<Load>();
-
-// Map
-List<Load> allLoads  = List<Load>();
-Load selectedLoad;

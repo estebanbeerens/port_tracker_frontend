@@ -6,33 +6,39 @@ import 'package:port_tracker/ui/styles/text_style.dart';
 
 // CustomCard is the card widget that we generally use
 class CustomCard extends StatefulWidget {
-  final loadDevice;
+  final String description;
   final String name;
   final String deviceOrFirm;
   final Position position;
   final bool isLoad;
   final bool finished;
-  CustomCard(this.loadDevice, this.name, this.deviceOrFirm, this.isLoad,
+  CustomCard(this.description, this.name, this.deviceOrFirm, this.isLoad,
       this.position, this.finished);
 
   @override
-  _CustomCardState createState() => _CustomCardState(this.loadDevice, this.name,
+  _CustomCardState createState() => _CustomCardState(this.description, this.name,
       this.deviceOrFirm, this.isLoad, this.position, this.finished);
 }
 
 class _CustomCardState extends State<CustomCard> {
-  final loadDevice;
+  final String description;
   final String name;
   final String deviceOrFirm;
   final Position position;
   final bool isLoad;
   final bool finished;
-  _CustomCardState(this.loadDevice, this.name, this.deviceOrFirm, this.isLoad,
+  _CustomCardState(this.description, this.name, this.deviceOrFirm, this.isLoad,
       this.position, this.finished);
 
   Widget checkLoadOrDevice() {
     if (isLoad) {
       return new Column(children: <Widget>[
+        new Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+          new Text(widget.description, style: Style.commonTextStyle),
+        ]),
+        new Container(height: 4.0),
         new Row(children: <Widget>[
           new Expanded(
             child: new Row(mainAxisSize: MainAxisSize.min, children: [
@@ -64,7 +70,7 @@ class _CustomCardState extends State<CustomCard> {
                     );
                   }))
         ]),
-        Row(
+        new Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Text("Mark as done:"),

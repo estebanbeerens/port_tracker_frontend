@@ -45,7 +45,6 @@ class MainDrawerState extends State<MainDrawer> {
   void logOutOfDevice() {
     setState(() {
       currentDevice = null;
-      selectedLoad = null;
     });
   }
 
