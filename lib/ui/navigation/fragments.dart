@@ -3,7 +3,6 @@ import 'package:geolocator/geolocator.dart';
 import 'package:port_tracker/ui/pages/home_page.dart';
 import 'package:port_tracker/ui/pages/machine_page.dart';
 import 'package:port_tracker/ui/pages/map_page.dart';
-import 'package:port_tracker/ui/pages/qr_page.dart';
 import 'package:port_tracker/ui/pages/loads_page.dart';
   
 class Home extends StatelessWidget {
@@ -20,13 +19,6 @@ class Map extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MapPage(_selectedMarkerPosition);
-  }
-}
-
-class Qr extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return QrPage();
   }
 }
 
