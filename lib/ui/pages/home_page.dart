@@ -36,7 +36,8 @@ class _HomePageState extends State<HomePage> {
                     image: new DecorationImage(
                         image: new AssetImage('assets/images/background.png'),
                         fit: BoxFit.cover))),
-            createCards()
+            
+            createCards(),
         ]
       )
     );

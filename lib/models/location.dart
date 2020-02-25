@@ -5,5 +5,5 @@ class Location {
   String deviceId;
   String accountId;
   DateTime insertTime;
-  Location(this.id, this.lat, this.lng, this.deviceId, this.accountId, this.insertTime);
+  Location(this.lat, this.lng, this.deviceId, this.accountId);
 }

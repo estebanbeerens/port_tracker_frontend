@@ -2,6 +2,8 @@ import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:port_tracker/functions/json_helper.dart';
+import 'package:port_tracker/functions/upcon_user.dart';
+import 'package:port_tracker/functions/send_location.dart';
 import 'package:port_tracker/globals.dart';
 import 'package:port_tracker/models/device.dart';
 import 'package:port_tracker/models/load.dart';
@@ -42,7 +44,8 @@ class MainDrawerState extends State<MainDrawer> {
   }
 
   
-  void logOutOfDevice() {
+  void setDeviceNull() {
+    logoutOfDevice();
     setState(() {
       currentDevice = null;
     });
@@ -52,10 +55,12 @@ class MainDrawerState extends State<MainDrawer> {
     try {
       String scannedQR = await BarcodeScanner.scan();
       String deviceJson = await getDeviceJson("http://www.port-tracker.tk:8000/api/devices/" + scannedQR);
+      startLocationTracking(true);
       setState(() {
         scanResult = "QR-code scan succesful";
         currentDevice = jsonToDevice(deviceJson);
       });
+      loginToDevice();
       for (Load load in currentDevice.loads) {
         setState(() {
           currentLoads.add(jsonToLoad(load.toString()));
@@ -110,7 +115,8 @@ class MainDrawerState extends State<MainDrawer> {
         onTap: () {
           Navigator.of(context).pop();
           if (currentDevice != null) {
-            logOutOfDevice();
+            setDeviceNull();
+            startLocationTracking(false);
             createToast("Logged out of device", Colors.black54);
           } else {
             createToast("You aren't logged in to a device", Colors.black54);
