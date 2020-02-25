@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:port_tracker/globals.dart';
-import 'package:port_tracker/mock/location_mock.dart';
 import 'package:port_tracker/models/load.dart';
 import 'package:port_tracker/ui/components/custom_card.dart';
 
@@ -9,7 +8,7 @@ List<Widget> createCurrentDeviceCard() {
   List<CustomCard> customCards = List<CustomCard>();
   // if (currentDevice != null) {
     customCards.add(CustomCard(null, currentDevice.name, currentDevice.type, false,
-        Position(latitude: double.parse(locations[0].lat), longitude: double.parse(locations[0].lng)), null));
+        Position(latitude: 0, longitude: 0), null));
   // }
   return customCards;
 }
