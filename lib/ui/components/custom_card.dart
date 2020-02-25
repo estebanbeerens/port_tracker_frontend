@@ -33,7 +33,7 @@ class _CustomCardState extends State<CustomCard> {
   Widget checkLoadOrDevice() {
     if (isLoad) {
       return new Column(children: <Widget>[
-        new Row(
+        new Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
           new Text(widget.description, style: Style.commonTextStyle),
