@@ -1,4 +1,4 @@
-import 'dart:async';
+// import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -6,6 +6,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:loading/indicator/ball_grid_pulse_indicator.dart';
 import 'package:loading/loading.dart';
+import 'package:port_tracker/functions/get_location.dart';
 import 'package:port_tracker/globals.dart';
 import 'package:port_tracker/models/load.dart';
 import 'package:port_tracker/ui/navigation/main_drawer.dart';
@@ -21,6 +22,9 @@ class MapPage extends StatefulWidget {
 }
 
 class MapPageState extends State<MapPage> {
+  String imagePath;
+  BitmapDescriptor customIcon;
+
   Position _selectedMarkerPosition;
   MapPageState(this._selectedMarkerPosition);
 
@@ -33,28 +37,14 @@ class MapPageState extends State<MapPage> {
     _createInitialPosition();
   }
 
+  // Checks if the map should start at your current position or the position of a marker
   void _createInitialPosition() async {
     log(_selectedMarkerPosition.toString());
     if (_selectedMarkerPosition != null) {
       _startPosition = _selectedMarkerPosition;
     } else {
-      _getLocation();
+      _startPosition = await getLocation();
     }
-  }
-
-  // Function that gets the current location and puts it in _currentPosition
-  // You can pull the lat and lng from _currentposition by using .latitude and .longitude
-  Future<void> _getLocation() async {
-    final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
-    geolocator
-        .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
-        .then((Position position) {
-      setState(() {
-        _startPosition = position;
-      });
-    }).catchError((e) {
-      print(e);
-    });
   }
 
   // Creates all the markers
@@ -62,7 +52,7 @@ class MapPageState extends State<MapPage> {
     List<Marker> allMarkers = [];
     if (currentDevice != null) {
       for (Load load in currentDevice.loads) {
-        String imagePath;
+
         double lat;
         double lng;
         if (load.finished == true) {
@@ -74,26 +64,42 @@ class MapPageState extends State<MapPage> {
           lat = double.parse(load.startLat);
           lng = double.parse(load.startLng);
         }
+        createMarker(context);
+
         allMarkers.add(
           Marker(
             markerId: MarkerId(load.id),
-            icon: BitmapDescriptor.fromAsset(imagePath),
+            // icon: BitmapDescriptor.fromAsset(imagePath),
+            icon: customIcon,
             position: LatLng(lat, lng),
             infoWindow: InfoWindow(
-                title: load.name,
-                snippet: load.description,
-                onTap: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        settings: RouteSettings(name: "LoadsPage"),
-                        builder: (BuildContext context) =>
-                            MainDrawer(2, null)),
-                  );
-                })));                
+              title: load.name,
+              snippet: load.description,
+              onTap: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    settings: RouteSettings(name: "LoadsPage"),
+                    builder: (BuildContext context) =>
+                      MainDrawer(2, null)),
+                );
+              }
+            )
+          )
+        );                
       }
     }
     return allMarkers;
+  }
+
+  void createMarker(context) {
+    ImageConfiguration configuration = createLocalImageConfiguration(context);
+    BitmapDescriptor.fromAssetImage(configuration, imagePath)
+        .then((icon) {
+      setState(() {
+        customIcon = icon;
+      });
+    });
   }
 
   @override

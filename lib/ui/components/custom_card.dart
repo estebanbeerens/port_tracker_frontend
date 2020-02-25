@@ -30,14 +30,24 @@ class _CustomCardState extends State<CustomCard> {
   _CustomCardState(this.description, this.name, this.deviceOrFirm, this.isLoad,
       this.position, this.finished);
 
+  Widget createDescription() {
+    if (isLoad) {
+      return new Text(widget.description, style: Style.commonTextStyle);
+    } else {
+      return new Container();
+    }
+  }
+
   Widget checkLoadOrDevice() {
     if (isLoad) {
       return new Column(children: <Widget>[
-        new Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-          new Text(widget.description, style: Style.commonTextStyle),
-        ]),
+        new Container(
+          child: new Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+            ]
+          ),
+        ),
         new Container(height: 4.0),
         new Row(children: <Widget>[
           new Expanded(
@@ -145,6 +155,7 @@ class _CustomCardState extends State<CustomCard> {
                         height: 2.0,
                         width: 36.0,
                         color: Color(0xF03B8E).withOpacity(1.0)),
+                    createDescription(),
                     checkLoadOrDevice()
                   ],
                 ),
