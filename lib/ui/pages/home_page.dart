@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:port_tracker/application/commands/chat/send-location.command.dart';
+import 'package:port_tracker/application/commands/location/send-location.command.dart';
 import 'package:port_tracker/domain/interfaces/i-command.dart';
 import 'package:port_tracker/domain/interfaces/i-event-publisher.dart';
 import 'package:port_tracker/functions/card_creator.dart';
 import 'package:port_tracker/globals.dart';
+import 'package:provider/provider.dart';
+import 'package:get_it/get_it.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -13,6 +15,13 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   IEventPublisher _publisher;
+
+   @override
+  void initState() {
+    super.initState();
+
+    _publisher = GetIt.I<IEventPublisher>();
+  }
 
   void sendLocation() async {
     // activeUser = Provider.of<User>(context).username;
@@ -49,12 +58,13 @@ class _HomePageState extends State<HomePage> {
                     image: new DecorationImage(
                         image: new AssetImage('assets/images/background.png'),
                         fit: BoxFit.cover))),
+            
+            createCards(),
             MaterialButton(
               child: Text("TEST ME HERE"),
               onPressed: () {
                  sendLocation();
               }),
-            createCards()
         ]
       )
     );

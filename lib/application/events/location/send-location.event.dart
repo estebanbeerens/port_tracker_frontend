@@ -4,16 +4,16 @@ import 'package:port_tracker/domain/events/base-event.dart';
 import 'package:port_tracker/domain/interfaces/i-payload.dart';
 
 class SendLocationEventPayload implements IPayload {
-  SendLocationEventPayload({this.latitude, this.longtitude, this.deviceId, this.accountId});
+  SendLocationEventPayload({this.latitude, this.longitude, this.deviceId, this.accountId});
 
   String latitude;
-  String longtitude;
+  String longitude;
   String deviceId;
   String accountId;
 
   @override
   String toJson() {
-    return jsonEncode({"latitude": this.latitude, "longtitude": this.longtitude, "deviceId": this.deviceId, "accountId": this.accountId});
+    return jsonEncode({"Latitude": this.latitude, "Longitude": this.longitude, "DeviceId": this.deviceId, "AccountId": this.accountId});
   }
 
   factory SendLocationEventPayload.fromRawJson(String str) =>
@@ -21,19 +21,19 @@ class SendLocationEventPayload implements IPayload {
 
   factory SendLocationEventPayload.fromJson(Map<String, dynamic> json) =>
       SendLocationEventPayload(
-        latitude: json["latitude"],
-        longtitude: json["longtitude"],
-        deviceId: json["deviceId"],
-        accountId: json["accountId"],
+        latitude: json["Latitude"],
+        longitude: json["Longitude"],
+        deviceId: json["DeviceId"],
+        accountId: json["AccountId"],
       );
 }
 
-class SendChatEvent extends BaseEvent {
-  SendChatEvent._({this.payload, this.metadata});
+class SendLocationEvent extends BaseEvent {
+  SendLocationEvent._({this.payload, this.metadata});
 
-  factory SendChatEvent.build(SendLocationEventPayload payload,
+  factory SendLocationEvent.build(SendLocationEventPayload payload,
       [Map<String, String> metadata]) {
-    return SendChatEvent._(payload: payload.toJson(), metadata: metadata);
+    return SendLocationEvent._(payload: payload.toJson(), metadata: metadata);
   }
 
   static Map<String, String> get stream => {
@@ -43,9 +43,9 @@ class SendChatEvent extends BaseEvent {
       };
 
   @override
-  String get topic => SendChatEvent.stream["topic"];
+  String get topic => SendLocationEvent.stream["topic"];
   @override
-  String get action => SendChatEvent.stream["action"];
+  String get action => SendLocationEvent.stream["action"];
 
   @override
   Map<String, String> metadata;
