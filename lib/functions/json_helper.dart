@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 
 // Function for HTTP request
-Future<String> requestLogin(String url, Map jsonMap) async {
+Future<String> postJson(String url, Map jsonMap) async {
   HttpClient httpClient = new HttpClient();
   HttpClientRequest request = await httpClient.postUrl(Uri.parse(url));
   request.headers.set('content-type', 'application/json');

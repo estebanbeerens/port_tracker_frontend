@@ -1,6 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:port_tracker/functions/json_helper.dart';
+import 'package:port_tracker/ui/components/toast.dart';
 import 'package:port_tracker/ui/pages/login_page.dart';
 
 class SignupPage extends StatefulWidget {
@@ -10,11 +14,12 @@ class SignupPage extends StatefulWidget {
 
 class _SignupPageState extends State<SignupPage> {
   final _formKey = GlobalKey<FormState>();
+  final String _url = "http://www.port-tracker.tk:8088/register";
   String _firstName;
   String _lastName;
-  String _email;
+  String _mail;
   String _password;
-  String _verificationCode;
+  // String _verificationCode;
   bool _autoValidate = false;
 
   @override
@@ -100,7 +105,7 @@ class _SignupPageState extends State<SignupPage> {
                                     fontSize:
                                         ScreenUtil.getInstance().setSp(26))),
                             TextFormField(
-                              //onSaved: (value) => _username = value,
+                              onSaved: (value) => _mail = value,
                               keyboardType: TextInputType.emailAddress,
                               validator: validateEmail,
                               decoration: InputDecoration(
@@ -118,7 +123,7 @@ class _SignupPageState extends State<SignupPage> {
                                     fontSize:
                                         ScreenUtil.getInstance().setSp(26))),
                             TextFormField(
-                              //onSaved: (value) => _password = value,
+                              onSaved: (value) => _password = value,
                               obscureText: true,
                               validator: validatePassword,
                               decoration: InputDecoration(
@@ -136,7 +141,7 @@ class _SignupPageState extends State<SignupPage> {
                                     fontSize:
                                         ScreenUtil.getInstance().setSp(26))),
                             TextFormField(
-                              //onSaved: (value) => _password = value,
+                              onSaved: (value) => _firstName = value,
                               validator: validateFirstName,
                               decoration: InputDecoration(
                                   hintText: "Jan",
@@ -153,7 +158,7 @@ class _SignupPageState extends State<SignupPage> {
                                     fontSize:
                                         ScreenUtil.getInstance().setSp(26))),
                             TextFormField(
-                              //onSaved: (value) => _password = value,
+                              onSaved: (value) => _lastName = value,
                               validator: validateLastName,
                               decoration: InputDecoration(
                                   hintText: "Janssen",
@@ -163,23 +168,23 @@ class _SignupPageState extends State<SignupPage> {
                             SizedBox(
                               height: ScreenUtil.getInstance().setHeight(35),
                             ),
-                            Text("Verification code",
-                                style: TextStyle(
-                                    fontFamily: "Poppins-Medium",
-                                    color: Colors.black,
-                                    fontSize:
-                                        ScreenUtil.getInstance().setSp(26))),
-                            TextFormField(
-                              // onSaved: (value) => _password = value,
-                              validator: validateVerificationCode,
-                              decoration: InputDecoration(
-                                  hintText: "Verification code",
-                                  hintStyle: TextStyle(
-                                      color: Colors.grey, fontSize: 12.0)),
-                            ),
-                            SizedBox(
-                              height: ScreenUtil.getInstance().setHeight(50),
-                            ),
+                            // Text("Verification code",
+                            //     style: TextStyle(
+                            //         fontFamily: "Poppins-Medium",
+                            //         color: Colors.black,
+                            //         fontSize:
+                            //             ScreenUtil.getInstance().setSp(26))),
+                            // TextFormField(
+                            //   // onSaved: (value) => _password = value,
+                            //   validator: validateVerificationCode,
+                            //   decoration: InputDecoration(
+                            //       hintText: "Verification code",
+                            //       hintStyle: TextStyle(
+                            //           color: Colors.grey, fontSize: 12.0)),
+                            // ),
+                            // SizedBox(
+                            //   height: ScreenUtil.getInstance().setHeight(50),
+                            // ),
                           ],
                         ),
                       ),
@@ -195,6 +200,18 @@ class _SignupPageState extends State<SignupPage> {
                             ),
                           ],
                         ),
+                        
+                        MaterialButton(
+                          height: 75,
+                          child: new Row( 
+                            children: <Widget>[
+                              Icon(Icons.arrow_back),
+                              new Container(width: 8.0),
+                              Text("Go back")
+                            ]),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          }),
                         InkWell(
                           child: Container(
                             width: ScreenUtil.getInstance().setWidth(330),
@@ -260,26 +277,27 @@ class _SignupPageState extends State<SignupPage> {
           )
         ],
       ),
-      // floatingActionButton: FloatingActionButton.extended(
-      //     icon: Icon(Icons.arrow_back),
-      //     label: Text("Go back"),
-      //     backgroundColor: Colors.white70,
-      //     onPressed: () {
-      //       Navigator.of(context).pop();
-      //     }),
     );
   }
 
-  void _validateInputs() {
+  void _validateInputs() async {
     if (_formKey.currentState.validate()) {
       //If all data are correct then save data to out variables
       _formKey.currentState.save();
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-            settings: RouteSettings(name: "LoginPage"),
-            builder: (BuildContext context) => LoginPage()),
-      );
+      Map jsonRegisterRequest = toJson();
+      log(jsonRegisterRequest.toString());
+      String jsonRegisterResponse = await postJson(_url, jsonRegisterRequest);
+      log(jsonRegisterResponse);
+      
+      if (jsonRegisterResponse.contains("Successful")) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              settings: RouteSettings(name: "LoginPage"),
+              builder: (BuildContext context) => LoginPage()),
+        );
+        createToast("Account created. Please log in.", Colors.black54);
+      }
     } else {
       //If all data are not valid then start auto validation.
       setState(() {
@@ -287,6 +305,9 @@ class _SignupPageState extends State<SignupPage> {
       });
     }
   }
+
+  // Function to create json
+  Map toJson() => {"mail": _mail, "password": _password,"firstname": _firstName, "lastname": _lastName};
 
   String validateEmail(String value) {
     Pattern pattern = r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
@@ -328,13 +349,13 @@ class _SignupPageState extends State<SignupPage> {
     }
   }
 
-  String validateVerificationCode(String value) {
-    Pattern pattern = r'^(?!\s*$).+';
-    RegExp regex = new RegExp(pattern);
-    if (!regex.hasMatch(value)) {
-      return 'Enter Valid Verification Code';
-    } else {
-      return null;
-    }
-  }
+  // String validateVerificationCode(String value) {
+  //   Pattern pattern = r'^(?!\s*$).+';
+  //   RegExp regex = new RegExp(pattern);
+  //   if (!regex.hasMatch(value)) {
+  //     return 'Enter Valid Verification Code';
+  //   } else {
+  //     return null;
+  //   }
+  // }
 }

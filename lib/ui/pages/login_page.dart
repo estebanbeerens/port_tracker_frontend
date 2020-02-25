@@ -287,7 +287,7 @@ class _LoginPageState extends State<LoginPage> {
                           color: Colors.green, 
                           onPressed: () async {
                             Map jsonLoginRequest = {"mail": "nickvbh@gmail.com", "password": "testpass"};
-                            String jsonLoginResponse = await requestLogin(_url, jsonLoginRequest);
+                            String jsonLoginResponse = await postJson(_url, jsonLoginRequest);
                             loggedInAccount = jsonToAccount(jsonLoginResponse);
                             Navigator.pushReplacement(
                               context,
@@ -300,7 +300,7 @@ class _LoginPageState extends State<LoginPage> {
                           color: Colors.red, 
                           onPressed: () async {
                             Map jsonLoginRequest = {"mail": "jandenul@gmail.com", "password": "testpass"};
-                            String jsonLoginResponse = await requestLogin(_url, jsonLoginRequest);
+                            String jsonLoginResponse = await postJson(_url, jsonLoginRequest);
                             loggedInAccount = jsonToAccount(jsonLoginResponse);
                             Navigator.pushReplacement(
                               context,
@@ -325,7 +325,7 @@ class _LoginPageState extends State<LoginPage> {
       //If all data are correct then save data to out variables
       _formKey.currentState.save();
       Map jsonLoginRequest = toJson();
-      String jsonLoginResponse = await requestLogin(_url, jsonLoginRequest);
+      String jsonLoginResponse = await postJson(_url, jsonLoginRequest);
       print(jsonLoginResponse);
 
       if (!jsonLoginResponse.contains("error")) {
