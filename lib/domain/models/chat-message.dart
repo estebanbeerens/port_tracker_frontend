@@ -1,9 +1,13 @@
-class ChatMessage {
-  String user;
-  String message;
+class Position {
+  String latitude;
+  String longtitude;
+  String deviceId;
+  String accountId;
 
-  ChatMessage({
-    this.user,
-    this.message,
+  Position({
+    this.latitude,
+    this.longtitude,
+    this.deviceId,
+    this.accountId
   });
 }
