@@ -58,7 +58,7 @@ class _CustomCardState extends State<CustomCard> {
                       Icon(Icons.location_on),
                       new Container(width: 4.0),
                       Text("Map")
-                    ],
+                    ], 
                   ),
                   onPressed: () {
                     Navigator.pushReplacement(

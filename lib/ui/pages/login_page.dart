@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:port_tracker/globals.dart';
 import 'package:port_tracker/functions/json_helper.dart';
 import 'package:port_tracker/models/account.dart';
+import 'package:port_tracker/ui/components/toast.dart';
 import 'package:port_tracker/ui/navigation/main_drawer.dart';
 import 'package:port_tracker/ui/pages/signup_page.dart';
 
@@ -165,19 +166,19 @@ class _LoginPageState extends State<LoginPage> {
                             SizedBox(
                               height: ScreenUtil.getInstance().setHeight(35),
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: <Widget>[
-                                Text(
-                                  "Forgot Password?",
-                                  style: TextStyle(
-                                      color: Colors.blue,
-                                      fontFamily: "Poppins-Medium",
-                                      fontSize:
-                                          ScreenUtil.getInstance().setSp(28)),
-                                )
-                              ],
-                            )
+                            // Row(
+                            //   mainAxisAlignment: MainAxisAlignment.end,
+                            //   children: <Widget>[
+                            //     Text(
+                            //       "Forgot Password?",
+                            //       style: TextStyle(
+                            //           color: Colors.blue,
+                            //           fontFamily: "Poppins-Medium",
+                            //           fontSize:
+                            //               ScreenUtil.getInstance().setSp(28)),
+                            //     )
+                            //   ],
+                            // )
                           ],
                         ),
                       ),
@@ -247,10 +248,7 @@ class _LoginPageState extends State<LoginPage> {
                       ],
                     ),
                     SizedBox(
-                      height: ScreenUtil.getInstance().setHeight(40),
-                    ),
-                    SizedBox(
-                      height: ScreenUtil.getInstance().setHeight(30),
+                      height: ScreenUtil.getInstance().setHeight(70),
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -338,6 +336,8 @@ class _LoginPageState extends State<LoginPage> {
               settings: RouteSettings(name: "MainDrawer"),
               builder: (BuildContext context) => MainDrawer(0, null)),
         );
+      } else {
+        createToast("Wrong email and / or password", Colors.red.withOpacity(0.7));
       }
     } else {
       //If all data are not valid then start auto validation.

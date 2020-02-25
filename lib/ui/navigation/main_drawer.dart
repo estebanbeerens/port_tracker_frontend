@@ -111,9 +111,9 @@ class MainDrawerState extends State<MainDrawer> {
           Navigator.of(context).pop();
           if (currentDevice != null) {
             logOutOfDevice();
-            createToast("Logged out of device");
+            createToast("Logged out of device", Colors.black54);
           } else {
-            createToast("You aren't logged in to a device");
+            createToast("You aren't logged in to a device", Colors.black54);
           }
         },
       );
