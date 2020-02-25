@@ -38,8 +38,8 @@ class SendChatEvent extends BaseEvent {
 
   static Map<String, String> get stream => {
         "key": "events",
-        "topic": "chat",
-        "action": "send",
+        "topic": "location",
+        "action": "insert",
       };
 
   @override

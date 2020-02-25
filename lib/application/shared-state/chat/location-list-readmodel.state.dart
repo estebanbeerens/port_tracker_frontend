@@ -1,17 +1,17 @@
 import 'package:port_tracker/domain/interfaces/i-readmodel.dart';
-import 'package:port_tracker/domain/models/chat-message.dart';
+import 'package:port_tracker/models/location.dart';
 
 class LocationListReadmodel extends IReadModel {
-  Set<Position> _positions;
+  Set<Location> _locations;
 
-  Set<Position> get messages =>
-      _positions == null || _positions.isEmpty ? Set() : _positions;
+  Set<Location> get messages =>
+      _locations == null || _locations.isEmpty ? Set() : _locations;
 
-  void receivePosition(Position position) {
-    if (position == null) return;
-    if (_positions == null) _positions = Set();
+  void receivePosition(Location location) {
+    if (location == null) return;
+    if (_locations == null) _locations = Set();
 
-    _positions.add(position);
+    _locations.add(location);
     notifyListeners();
   }
 }

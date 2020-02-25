@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:port_tracker/application/commands/chat/send-location.command.dart';
+import 'package:port_tracker/domain/interfaces/i-command.dart';
+import 'package:port_tracker/domain/interfaces/i-event-publisher.dart';
 import 'package:port_tracker/functions/card_creator.dart';
 import 'package:port_tracker/globals.dart';
 
@@ -9,6 +12,16 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  IEventPublisher _publisher;
+
+  void sendLocation() async {
+    // activeUser = Provider.of<User>(context).username;
+
+    ICommand sendLocationCommand =
+        SendLocationCommand.build("0", "0", "5e416a48c66c312270310404", "5e43bbfb641d1acf076762a5");
+
+    _publisher.publish(sendLocationCommand.execute());
+  }
 
   createCards() {
     if (currentDevice != null) {
@@ -36,6 +49,11 @@ class _HomePageState extends State<HomePage> {
                     image: new DecorationImage(
                         image: new AssetImage('assets/images/background.png'),
                         fit: BoxFit.cover))),
+            MaterialButton(
+              child: Text("TEST ME HERE"),
+              onPressed: () {
+                 sendLocation();
+              }),
             createCards()
         ]
       )
