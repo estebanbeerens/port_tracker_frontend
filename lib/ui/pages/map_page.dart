@@ -1,4 +1,4 @@
-// import 'dart:async';
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -6,7 +6,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:loading/indicator/ball_grid_pulse_indicator.dart';
 import 'package:loading/loading.dart';
-import 'package:port_tracker/functions/get_location.dart';
 import 'package:port_tracker/globals.dart';
 import 'package:port_tracker/models/load.dart';
 import 'package:port_tracker/ui/navigation/main_drawer.dart';
@@ -43,8 +42,21 @@ class MapPageState extends State<MapPage> {
     if (_selectedMarkerPosition != null) {
       _startPosition = _selectedMarkerPosition;
     } else {
-      _startPosition = await getLocation();
+      _getLocation();
     }
+  }
+
+  Future<void> _getLocation() async {
+    final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
+    geolocator
+      .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
+      .then((Position position) {
+        setState(() {
+          _startPosition = position;
+        });
+      }).catchError((e) {
+        print(e);
+      });
   }
 
   // Creates all the markers
@@ -52,7 +64,6 @@ class MapPageState extends State<MapPage> {
     List<Marker> allMarkers = [];
     if (currentDevice != null) {
       for (Load load in currentDevice.loads) {
-
         double lat;
         double lng;
         if (load.finished == true) {
@@ -64,13 +75,10 @@ class MapPageState extends State<MapPage> {
           lat = double.parse(load.startLat);
           lng = double.parse(load.startLng);
         }
-        createMarker(context);
-
         allMarkers.add(
           Marker(
             markerId: MarkerId(load.id),
-            // icon: BitmapDescriptor.fromAsset(imagePath),
-            icon: customIcon,
+            icon: BitmapDescriptor.fromAsset(imagePath),
             position: LatLng(lat, lng),
             infoWindow: InfoWindow(
               title: load.name,
@@ -90,16 +98,6 @@ class MapPageState extends State<MapPage> {
       }
     }
     return allMarkers;
-  }
-
-  void createMarker(context) {
-    ImageConfiguration configuration = createLocalImageConfiguration(context);
-    BitmapDescriptor.fromAssetImage(configuration, imagePath)
-        .then((icon) {
-      setState(() {
-        customIcon = icon;
-      });
-    });
   }
 
   @override

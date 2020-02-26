@@ -11,7 +11,7 @@ class DrawerItem {
 final drawerItemsUser = [
   new DrawerItem("Home", Icons.home, true),
   new DrawerItem("Map", Icons.map, true),
-  new DrawerItem("New loads", Icons.local_shipping, true)
+  new DrawerItem("Loads", Icons.local_shipping, true)
 ];
 
 final drawerItemsModerator = [

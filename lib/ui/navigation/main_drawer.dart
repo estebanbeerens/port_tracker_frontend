@@ -6,7 +6,6 @@ import 'package:port_tracker/functions/upcon_user.dart';
 import 'package:port_tracker/functions/send_location.dart';
 import 'package:port_tracker/globals.dart';
 import 'package:port_tracker/models/device.dart';
-import 'package:port_tracker/models/load.dart';
 import 'package:port_tracker/ui/components/toast.dart';
 import 'package:port_tracker/ui/navigation/fragments.dart' as Fragments;
 import 'package:flutter/material.dart';
@@ -61,11 +60,6 @@ class MainDrawerState extends State<MainDrawer> {
         currentDevice = jsonToDevice(deviceJson);
       });
       loginToDevice();
-      for (Load load in currentDevice.loads) {
-        setState(() {
-          currentLoads.add(jsonToLoad(load.toString()));
-        });
-      }
     }
     on PlatformException catch (ex) {
       if (ex.code == BarcodeScanner.CameraAccessDenied) {

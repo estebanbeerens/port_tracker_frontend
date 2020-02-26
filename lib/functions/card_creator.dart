@@ -1,34 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:port_tracker/globals.dart';
 import 'package:port_tracker/models/load.dart';
-import 'package:port_tracker/ui/components/custom_card.dart';
+import 'package:port_tracker/ui/components/device_card.dart';
+import 'package:port_tracker/ui/components/load_card.dart';
 
 List<Widget> createCurrentDeviceCard() {
-  List<CustomCard> customCards = List<CustomCard>();
-  // if (currentDevice != null) {
-    customCards.add(CustomCard(null, currentDevice.name, currentDevice.type, false,
-        Position(latitude: 0, longitude: 0), null));
-  // }
+  List<Widget> customCards = List<Widget>();
+  customCards.add(DeviceCard(currentDevice));
   return customCards;
 }
 
 List<Widget> createCurrentLoadsCards() {
-  List<CustomCard> customCards = List<CustomCard>();
-  // if (currentDevice != null) {
-    for (Load load in currentDevice.loads) {
-      double lat; double lng;
-      if (load.finished == true) {
-        lat = double.parse(load.destLat);
-        lng = double.parse(load.destLng);
-      } else {
-        lat = double.parse(load.startLat);
-        lng = double.parse(load.startLng);
-      }
-      customCards.add(CustomCard(load.description, load.name, load.firm, true,
-          Position(latitude: lat, longitude: lng), load.finished));
-      print(load);
+  List<Widget> customCards = List<Widget>();
+  for (Load load in currentDevice.loads) {
+    customCards.add(LoadCard(load));
+  }
+  return customCards;
+}
+
+List<Widget> createUnfinshedCurrentLoadsCards() {
+  List<Widget> customCards = List<Widget>();
+  for (Load load in currentDevice.loads) {
+    if (!load.finished) {
+      customCards.add(LoadCard(load));
     }
-  // }
+  }
   return customCards;
 }

@@ -12,7 +12,7 @@ class _HomePageState extends State<HomePage> {
 
   createCards() {
     if (currentDevice != null) {
-      return new ListView(children: createCurrentDeviceCard() + createCurrentLoadsCards());
+      return new ListView(children: createCurrentDeviceCard() + createUnfinshedCurrentLoadsCards());
     } else {
       return new Center( child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -37,7 +37,7 @@ class _HomePageState extends State<HomePage> {
                         image: new AssetImage('assets/images/background.png'),
                         fit: BoxFit.cover))),
             
-            createCards(),
+            createCards()
         ]
       )
     );
