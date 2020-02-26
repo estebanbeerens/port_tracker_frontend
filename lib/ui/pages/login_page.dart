@@ -279,37 +279,37 @@ class _LoginPageState extends State<LoginPage> {
                     SizedBox(
                       height: ScreenUtil.getInstance().setHeight(30),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        IconButton(
-                          icon: Icon(Icons.verified_user), 
-                          color: Colors.green, 
-                          onPressed: () async {
-                            Map jsonLoginRequest = {"mail": "nickvbh@gmail.com", "password": "testpass"};
-                            String jsonLoginResponse = await postJson(_url, jsonLoginRequest);
-                            loggedInAccount = jsonToAccount(jsonLoginResponse);
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(builder: (context) => MainDrawer(0, null)),
-                            );
-                          }
-                        ),
-                        IconButton(
-                          icon: Icon(Icons.supervised_user_circle), 
-                          color: Colors.red, 
-                          onPressed: () async {
-                            Map jsonLoginRequest = {"mail": "jandenul@gmail.com", "password": "testpass"};
-                            String jsonLoginResponse = await postJson(_url, jsonLoginRequest);
-                            loggedInAccount = jsonToAccount(jsonLoginResponse);
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(builder: (context) => MainDrawer(0, null)),
-                            );
-                          }
-                        ),
-                      ],
-                    )
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.center,
+                    //   children: <Widget>[
+                    //     IconButton(
+                    //       icon: Icon(Icons.verified_user), 
+                    //       color: Colors.green, 
+                    //       onPressed: () async {
+                    //         Map jsonLoginRequest = {"mail": "nickvbh@gmail.com", "password": "testpass"};
+                    //         String jsonLoginResponse = await postJson(_url, jsonLoginRequest);
+                    //         loggedInAccount = jsonToAccount(jsonLoginResponse);
+                    //         Navigator.pushReplacement(
+                    //           context,
+                    //           MaterialPageRoute(builder: (context) => MainDrawer(0, null)),
+                    //         );
+                    //       }
+                    //     ),
+                    //     IconButton(
+                    //       icon: Icon(Icons.supervised_user_circle), 
+                    //       color: Colors.red, 
+                    //       onPressed: () async {
+                    //         Map jsonLoginRequest = {"mail": "jandenul@gmail.com", "password": "testpass"};
+                    //         String jsonLoginResponse = await postJson(_url, jsonLoginRequest);
+                    //         loggedInAccount = jsonToAccount(jsonLoginResponse);
+                    //         Navigator.pushReplacement(
+                    //           context,
+                    //           MaterialPageRoute(builder: (context) => MainDrawer(0, null)),
+                    //         );
+                    //       }
+                    //     ),
+                    //   ],
+                    // )
                   ],
                 ),
               ),
