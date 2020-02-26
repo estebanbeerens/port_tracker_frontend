@@ -239,8 +239,6 @@ class MainDrawerState extends State<MainDrawer> {
               title: new Text("Log out",
                   style: TextStyle(fontFamily: 'Montserrat')),
               onTap: () {
-                setDeviceNull();
-                startLocationTracking(false);
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
